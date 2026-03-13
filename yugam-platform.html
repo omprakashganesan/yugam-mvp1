@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yugam யுகம் — India's Neighbourhood Care Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Tamil:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bark: #2C1A0E;
+    --saffron: #E8651A;
+    --gold: #C9A227;
+    --cream: #FAF5ED;
+    --blush: #F5EBD8;
+    --red: #C0392B;
+    --green: #1E7A4A;
+    --blue: #1A5276;
+    --muted: #7A6050;
+    --white: #FFFFFF;
+    --shadow: 0 4px 32px rgba(44,26,14,0.12);
+    --card-shadow: 0 2px 16px rgba(44,26,14,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--bark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  #sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 220px; background: var(--bark);
+    display: flex; flex-direction: column;
+    z-index: 100; padding: 0 0 24px;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 8px;
+  }
+
+  .sidebar-logo .logo-tamil {
+    font-family: 'Noto Sans Tamil', serif;
+    font-size: 22px; color: var(--saffron);
+    line-height: 1;
+  }
+  .sidebar-logo .logo-eng {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: rgba(255,255,255,0.5);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .sidebar-logo .logo-tagline {
+    font-size: 10px; color: rgba(255,255,255,0.3);
+    margin-top: 4px; line-height: 1.4;
+  }
+
+  .nav-section-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); padding: 12px 20px 4px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px; cursor: pointer;
+    color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 400;
+    transition: all 0.2s; border-left: 3px solid transparent;
+    text-decoration: none;
+  }
+  .nav-item:hover { color: var(--cream); background: rgba(255,255,255,0.05); }
+  .nav-item.active {
+    color: var(--saffron); border-left-color: var(--saffron);
+    background: rgba(232,101,26,0.1);
+  }
+  .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .sidebar-bottom {
+    margin-top: auto; padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .user-chip {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--saffron); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px; color: white;
+    flex-shrink: 0;
+  }
+  .user-info .user-name { color: var(--cream); font-size: 12px; font-weight: 500; }
+  .user-info .user-role { color: rgba(255,255,255,0.35); font-size: 10px; }
+
+  /* ── MAIN CONTENT ── */
+  #main {
+    margin-left: 220px;
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: white; border-bottom: 1px solid rgba(44,26,14,0.08);
+    padding: 14px 32px; display: flex; align-items: center;
+    justify-content: space-between; position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; }
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn {
+    padding: 8px 18px; border-radius: 6px; border: none;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: var(--saffron); color: white; }
+  .btn-primary:hover { background: #d45a12; }
+  .btn-outline { background: transparent; color: var(--bark); border: 1.5px solid rgba(44,26,14,0.2); }
+  .btn-outline:hover { border-color: var(--saffron); color: var(--saffron); }
+  .btn-ghost { background: transparent; color: var(--muted); }
+  .btn-ghost:hover { color: var(--bark); background: var(--blush); }
+  .btn-green { background: var(--green); color: white; }
+  .btn-green:hover { background: #165d37; }
+  .btn-blue { background: var(--blue); color: white; }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+  /* ── PAGE CONTENT ── */
+  .page { display: none; padding: 28px 32px; animation: fadeIn 0.25s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── CARDS ── */
+  .card {
+    background: white; border-radius: 12px;
+    box-shadow: var(--card-shadow); overflow: hidden;
+  }
+  .card-pad { padding: 20px; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid rgba(44,26,14,0.06); display: flex; align-items: center; justify-content: space-between; }
+  .card-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; }
+
+  /* ── STAT CARDS ── */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .stat-card {
+    background: white; border-radius: 12px; padding: 20px;
+    box-shadow: var(--card-shadow); border-top: 3px solid transparent;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::after {
+    content: attr(data-icon);
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    font-size: 36px; opacity: 0.07;
+  }
+  .stat-card.orange { border-top-color: var(--saffron); }
+  .stat-card.gold { border-top-color: var(--gold); }
+  .stat-card.green { border-top-color: var(--green); }
+  .stat-card.blue { border-top-color: var(--blue); }
+  .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: var(--bark); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stat-change { font-size: 11px; margin-top: 8px; display: inline-flex; align-items: center; gap: 3px; }
+  .stat-change.up { color: var(--green); }
+  .stat-change.down { color: var(--red); }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* ── SECTION HEADER ── */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; }
+  .section-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* ── TAGS / BADGES ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  }
+  .badge-orange { background: rgba(232,101,26,0.12); color: var(--saffron); }
+  .badge-green { background: rgba(30,122,74,0.12); color: var(--green); }
+  .badge-blue { background: rgba(26,82,118,0.12); color: var(--blue); }
+  .badge-gold { background: rgba(201,162,39,0.15); color: #8a6d00; }
+  .badge-red { background: rgba(192,57,43,0.1); color: var(--red); }
+  .badge-muted { background: var(--blush); color: var(--muted); }
+
+  /* ── MEMBER CARDS ── */
+  .member-card {
+    background: white; border-radius: 10px; padding: 16px;
+    box-shadow: var(--card-shadow); display: flex; align-items: center; gap: 14px;
+    transition: transform 0.15s;
+  }
+  .member-card:hover { transform: translateY(-1px); }
+  .member-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--blush); display: flex; align-items: center;
+    justify-content: center; font-size: 20px; flex-shrink: 0;
+  }
+  .member-name { font-weight: 600; font-size: 14px; }
+  .member-meta { font-size: 12px; color: var(--muted); }
+  .member-actions { margin-left: auto; display: flex; gap: 6px; }
+
+  /* ── TABLE ── */
+  .table { width: 100%; border-collapse: collapse; }
+  .table th { text-align: left; padding: 10px 14px; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid rgba(44,26,14,0.08); font-weight: 500; }
+  .table td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid rgba(44,26,14,0.04); }
+  .table tr:last-child td { border-bottom: none; }
+  .table tr:hover td { background: rgba(44,26,14,0.015); }
+
+  /* ── CIRCLE VISUAL ── */
+  .circle-card {
+    background: white; border-radius: 12px; padding: 20px;
+    box-shadow: var(--card-shadow); border-left: 4px solid var(--saffron);
+  }
+  .circle-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; }
+  .circle-location { font-size: 12px; color: var(--muted); margin: 2px 0 10px; }
+  .circle-members-row { display: flex; align-items: center; gap: -4px; margin: 10px 0; }
+  .circle-member-dot {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--blush); border: 2px solid white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; margin-left: -6px; first-child { margin-left: 0; }
+  }
+  .circle-member-dot:first-child { margin-left: 0; }
+  .circle-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 14px; }
+  .circle-stat { text-align: center; }
+  .circle-stat-val { font-size: 20px; font-weight: 600; font-family: 'Cormorant Garamond', serif; }
+  .circle-stat-label { font-size: 10px; color: var(--muted); }
+
+  /* ── SKILL MARKETPLACE ── */
+  .skill-card {
+    background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: var(--card-shadow); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .skill-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(44,26,14,0.14); }
+  .skill-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 48px; }
+  .skill-body { padding: 14px; }
+  .skill-title { font-weight: 600; font-size: 14px; }
+  .skill-teacher { font-size: 12px; color: var(--muted); margin: 2px 0 8px; }
+  .skill-footer { display: flex; align-items: center; justify-content: space-between; }
+  .skill-price { font-weight: 600; color: var(--saffron); font-size: 14px; }
+  .skill-stars { color: var(--gold); font-size: 12px; }
+
+  /* ── GMEET MODAL ── */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(44,26,14,0.5); z-index: 200;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 16px; width: 600px; max-width: 95vw;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-header { padding: 20px 24px; border-bottom: 1px solid rgba(44,26,14,0.08); display: flex; justify-content: space-between; align-items: center; }
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; }
+  .modal-body { padding: 24px; }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid rgba(44,26,14,0.08); display: flex; gap: 10px; justify-content: flex-end; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%; padding: 10px 14px; border: 1.5px solid rgba(44,26,14,0.15);
+    border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--bark); background: var(--cream); outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--saffron); background: white; }
+  select.form-input { cursor: pointer; }
+
+  /* ── GMEET PREVIEW ── */
+  .gmeet-preview {
+    background: #202124; border-radius: 12px; padding: 20px;
+    color: white; margin-top: 16px;
+  }
+  .gmeet-link {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 14px;
+    margin: 12px 0;
+  }
+  .gmeet-link a { color: #8ab4f8; font-size: 13px; text-decoration: none; flex: 1; word-break: break-all; }
+  .gmeet-badge { display: flex; align-items: center; gap: 6px; background: #1e6f42; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+  .gmeet-info-row { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; opacity: 0.7; }
+
+  /* ── JOURNEY CARDS ── */
+  .journey-card {
+    background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+  .journey-header-img { height: 130px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .journey-header-img .journey-emoji { font-size: 48px; }
+  .journey-price-tag {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--bark); color: white; padding: 4px 10px;
+    border-radius: 6px; font-size: 12px; font-weight: 600;
+  }
+  .journey-body { padding: 14px; }
+  .journey-title { font-weight: 600; font-size: 15px; }
+  .journey-meta { font-size: 12px; color: var(--muted); margin: 4px 0 10px; }
+  .journey-features { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* ── PALLIATIVE ── */
+  .care-card {
+    background: white; border-radius: 10px; padding: 16px;
+    box-shadow: var(--card-shadow); border-left: 4px solid var(--red);
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .care-card.medium { border-left-color: var(--gold); }
+  .care-card.low { border-left-color: var(--green); }
+  .care-name { font-weight: 600; font-size: 14px; }
+  .care-detail { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* ── CHART MINI ── */
+  .mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 60px; padding-top: 8px; }
+  .mini-bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    background: rgba(232,101,26,0.15); position: relative;
+    transition: all 0.3s;
+  }
+  .mini-bar:hover { background: var(--saffron); }
+  .mini-bar.active { background: var(--saffron); }
+
+  /* ── PROGRESS ── */
+  .progress-bar { background: var(--blush); border-radius: 4px; height: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: var(--saffron); transition: width 0.5s ease; }
+  .progress-fill.gold { background: var(--gold); }
+  .progress-fill.green { background: var(--green); }
+
+  /* ── NOTIFICATION DOT ── */
+  .notif-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--saffron);
+    display: inline-block; margin-left: 6px; flex-shrink: 0;
+  }
+
+  /* ── SESSION SCHEDULED CARD ── */
+  .session-item {
+    display: flex; align-items: center; gap: 14px; padding: 12px 0;
+    border-bottom: 1px solid rgba(44,26,14,0.06);
+  }
+  .session-item:last-child { border-bottom: none; }
+  .session-time { text-align: center; min-width: 50px; }
+  .session-time .time { font-size: 14px; font-weight: 600; color: var(--saffron); }
+  .session-time .ampm { font-size: 10px; color: var(--muted); }
+  .session-info { flex: 1; }
+  .session-name { font-weight: 500; font-size: 13px; }
+  .session-detail { font-size: 11px; color: var(--muted); }
+  .session-join {
+    background: #1a73e8; color: white; border: none; padding: 6px 14px;
+    border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; gap: 5px; white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .session-join:hover { background: #1557b0; }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 500;
+    background: var(--bark); color: white; padding: 12px 20px;
+    border-radius: 10px; font-size: 13px; display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: slideLeft 0.3s ease;
+  }
+  @keyframes slideLeft { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* ── SCROLL ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(44,26,14,0.15); border-radius: 3px; }
+
+  /* ── ACTIVITY FEED ── */
+  .activity-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(44,26,14,0.05); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--saffron); margin-top: 5px; flex-shrink: 0; }
+  .activity-dot.gold { background: var(--gold); }
+  .activity-dot.green { background: var(--green); }
+  .activity-text { font-size: 13px; color: var(--bark); }
+  .activity-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── RESPONSIVE TWEAKS ── */
+  @media (max-width: 768px) {
+    #sidebar { width: 60px; }
+    #sidebar .sidebar-logo .logo-eng, #sidebar .sidebar-logo .logo-tagline,
+    #sidebar .nav-item span, #sidebar .nav-section-label, #sidebar .user-info { display: none; }
+    .nav-item { justify-content: center; padding: 12px; }
+    #main { margin-left: 60px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── HEADER GRADIENT ── */
+  .page-hero {
+    background: linear-gradient(135deg, var(--bark) 0%, #4a2c18 100%);
+    border-radius: 14px; padding: 28px 28px 100px;
+    color: white; margin-bottom: -80px; position: relative; overflow: hidden;
+  }
+  .page-hero::after {
+    content: ''; position: absolute; right: -40px; top: -40px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(232,101,26,0.15);
+  }
+  .page-hero h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; }
+  .page-hero p { opacity: 0.65; font-size: 13px; margin-top: 4px; }
+  .hero-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 80px; }
+
+  /* ── ONBOARDING PLAYBOOK ── */
+  .playbook-card {
+    background: white; border-radius: 12px; padding: 20px; box-shadow: var(--card-shadow);
+    border-top: 3px solid var(--saffron);
+  }
+  .playbook-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: rgba(44,26,14,0.08); font-weight: 600; line-height: 1; margin-bottom: 4px; }
+  .playbook-title { font-weight: 600; font-size: 15px; }
+  .playbook-how { font-size: 12px; color: var(--muted); margin: 6px 0; }
+  .playbook-cta { font-size: 12px; color: var(--saffron); font-weight: 500; font-style: italic; }
+
+  /* ── SETTINGS ── */
+  .settings-section { background: white; border-radius: 12px; box-shadow: var(--card-shadow); margin-bottom: 20px; overflow: hidden; }
+  .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid rgba(44,26,14,0.06); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-label { font-size: 14px; font-weight: 500; }
+  .settings-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .toggle {
+    width: 40px; height: 22px; border-radius: 11px; background: rgba(44,26,14,0.15);
+    cursor: pointer; position: relative; transition: background 0.2s;
+  }
+  .toggle.on { background: var(--saffron); }
+  .toggle::after {
+    content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%;
+    background: white; top: 3px; left: 3px; transition: left 0.2s;
+  }
+  .toggle.on::after { left: 21px; }
+
+  .gmeet-icon { color: #1a73e8; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-tamil">யுகம்</div>
+    <div class="logo-eng">YUGAM</div>
+    <div class="logo-tagline">Neighbourhood Care Network 60+</div>
+  </div>
+
+  <div class="nav-section-label">Platform</div>
+  <a class="nav-item active" onclick="showPage('dashboard', this)">
+    <span class="nav-icon">🏠</span><span>Dashboard</span>
+  </a>
+  <a class="nav-item" onclick="showPage('circles', this)">
+    <span class="nav-icon">⭕</span><span>Circles</span>
+  </a>
+  <a class="nav-item" onclick="showPage('members', this)">
+    <span class="nav-icon">👥</span><span>Members</span>
+  </a>
+  <a class="nav-item" onclick="showPage('palliative', this)">
+    <span class="nav-icon">💛</span><span>Care Layer</span>
+  </a>
+
+  <div class="nav-section-label">Commerce</div>
+  <a class="nav-item" onclick="showPage('skills', this)">
+    <span class="nav-icon">🎓</span><span>Skill Market</span>
+  </a>
+  <a class="nav-item" onclick="showPage('sessions', this)">
+    <span class="nav-icon">📹</span><span>Sessions</span>
+  </a>
+  <a class="nav-item" onclick="showPage('journeys', this)">
+    <span class="nav-icon">✈️</span><span>Journeys</span>
+  </a>
+
+  <div class="nav-section-label">Business</div>
+  <a class="nav-item" onclick="showPage('revenue', this)">
+    <span class="nav-icon">₹</span><span>Revenue</span>
+  </a>
+  <a class="nav-item" onclick="showPage('nri', this)">
+    <span class="nav-icon">🌏</span><span>NRI Families</span>
+  </a>
+  <a class="nav-item" onclick="showPage('onboarding', this)">
+    <span class="nav-icon">📋</span><span>Playbook</span>
+  </a>
+  <a class="nav-item" onclick="showPage('settings', this)">
+    <span class="nav-icon">⚙️</span><span>Settings</span>
+  </a>
+
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="user-avatar">OP</div>
+      <div class="user-info">
+        <div class="user-name">Omprakash G.</div>
+        <div class="user-role">Founder · Admin</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Dashboard</div>
+    <div class="topbar-actions">
+      <span style="font-size:12px;color:var(--muted);">📍 Thoothukudi, Tamil Nadu</span>
+      <button class="btn btn-outline btn-sm" onclick="showPage('members',null);setTimeout(()=>document.getElementById('add-member-modal').classList.add('open'),100)">+ Add Member</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('session-modal')">📹 Schedule Session</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: DASHBOARD
+  ════════════════════════════════════════════ -->
+  <div class="page active" id="page-dashboard">
+    <div class="stats-grid">
+      <div class="stat-card orange" data-icon="👤">
+        <div class="stat-value">247</div>
+        <div class="stat-label">Active Members</div>
+        <span class="stat-change up">↑ 12% this month</span>
+      </div>
+      <div class="stat-card gold" data-icon="⭕">
+        <div class="stat-value">18</div>
+        <div class="stat-label">Active Circles</div>
+        <span class="stat-change up">↑ 3 new circles</span>
+      </div>
+      <div class="stat-card green" data-icon="₹">
+        <div class="stat-value">₹4.2L</div>
+        <div class="stat-label">Monthly Revenue</div>
+        <span class="stat-change up">↑ 28% vs last month</span>
+      </div>
+      <div class="stat-card blue" data-icon="✈️">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Journeys Scheduled</div>
+        <span class="stat-change up">↑ 2 upcoming</span>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <!-- Activity Feed -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Live Activity</h3>
+          <span class="badge badge-green">● Live</span>
+        </div>
+        <div class="card-pad">
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div>
+              <div class="activity-text">Saroja Paati completed a <strong>Traditional Cooking</strong> session — 4 students joined</div>
+              <div class="activity-time">8 minutes ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot gold"></div>
+            <div>
+              <div class="activity-text">Marina Beach Morning Walk Circle — 11/12 members attended ☀️</div>
+              <div class="activity-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot green"></div>
+            <div>
+              <div class="activity-text">New NRI family subscription: <strong>Rajan Family, Singapore</strong> — ₹2,499/mo</div>
+              <div class="activity-time">3 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div>
+              <div class="activity-text">Palliative check-in completed for <strong>K. Subramaniam</strong> — volunteer assigned</div>
+              <div class="activity-time">4 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot gold"></div>
+            <div>
+              <div class="activity-text">Char Dham Journey — 24/28 seats booked! 🙏</div>
+              <div class="activity-time">Yesterday</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Sessions -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Today's Sessions</h3>
+          <button class="btn btn-outline btn-sm" onclick="openModal('session-modal')">+ New</button>
+        </div>
+        <div class="card-pad">
+          <div class="session-item">
+            <div class="session-time"><div class="time">6:00</div><div class="ampm">AM</div></div>
+            <div class="session-info">
+              <div class="session-name">🚶 Marina Beach Morning Walk</div>
+              <div class="session-detail">Circle 1 · 12 members · Coordinator: Priya</div>
+            </div>
+            <span class="badge badge-green">Done</span>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">10:00</div><div class="ampm">AM</div></div>
+            <div class="session-info">
+              <div class="session-name">🍲 Traditional Cooking Class</div>
+              <div class="session-detail">Skill Session · Saroja Paati · Google Meet</div>
+            </div>
+            <button class="session-join" onclick="openJoinMeet('https://meet.google.com/abc-defg-hij')">
+              <span>🎥</span> Join Meet
+            </button>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">5:00</div><div class="ampm">PM</div></div>
+            <div class="session-info">
+              <div class="session-name">🧘 Chair Yoga — Community Hall</div>
+              <div class="session-detail">Circle 3 · 8 members · Coordinator: Arjun</div>
+            </div>
+            <span class="badge badge-blue">Upcoming</span>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">6:30</div><div class="ampm">PM</div></div>
+            <div class="session-info">
+              <div class="session-name">🎻 Carnatic Violin Masterclass</div>
+              <div class="session-detail">Skill Session · Rajan Thatha · Google Meet</div>
+            </div>
+            <button class="session-join" onclick="openJoinMeet('https://meet.google.com/xyz-pqrs-tuv')">
+              <span>🎥</span> Join Meet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Revenue Breakdown -->
+      <div class="card">
+        <div class="card-header"><h3>Revenue Streams</h3><span class="badge badge-green">Apr 2026</span></div>
+        <div class="card-pad">
+          <div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px">Individual Memberships</span><strong style="font-size:13px">₹82,251</strong></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px">NRI Family Plans</span><strong style="font-size:13px">₹1,49,940</strong></div>
+            <div class="progress-bar"><div class="progress-fill gold" style="width:78%"></div></div>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px">Skill Marketplace (20%)</span><strong style="font-size:13px">₹34,200</strong></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:22%"></div></div>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px">Journeys Programme</span><strong style="font-size:13px">₹1,12,000</strong></div>
+            <div class="progress-bar"><div class="progress-fill green" style="width:70%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px">Corporate Wellness</span><strong style="font-size:13px">₹40,000</strong></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Circle Health -->
+      <div class="card">
+        <div class="card-header"><h3>Circle Health</h3></div>
+        <div class="card-pad">
+          <table class="table">
+            <thead><tr><th>Circle</th><th>Members</th><th>Attendance</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Marina Beach Walk</td><td>12/12</td><td>94%</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td>Arulananda Nagar Yoga</td><td>10/12</td><td>88%</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td>Bharathi Park Bhajan</td><td>8/12</td><td>76%</td><td><span class="badge badge-gold">Monitor</span></td></tr>
+              <tr><td>VE Road Music Circle</td><td>9/12</td><td>82%</td><td><span class="badge badge-green">Healthy</span></td></tr>
+              <tr><td>Harbour Area Walking</td><td>6/12</td><td>65%</td><td><span class="badge badge-red">At Risk</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: CIRCLES
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-circles">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Neighbourhood Circles</div>
+        <div class="section-sub">18 active circles · 247 elders · Thoothukudi</div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('circle-modal')">+ Create Circle</button>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:24px">
+      <div class="circle-card">
+        <div class="circle-name">🌅 Marina Beach Morning Walk</div>
+        <div class="circle-location">📍 Marina Beach Front, 6:00 AM · Mon/Wed/Fri</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <span class="badge badge-green">Healthy</span>
+          <span class="badge badge-orange">94% Attendance</span>
+        </div>
+        <div class="circle-members-row">
+          <div class="circle-member-dot">👵</div>
+          <div class="circle-member-dot">👴</div>
+          <div class="circle-member-dot">👵</div>
+          <div class="circle-member-dot">👴</div>
+          <div class="circle-member-dot">👵</div>
+          <div style="margin-left:-6px;width:30px;height:30px;border-radius:50%;background:var(--saffron);color:white;font-size:10px;display:flex;align-items:center;justify-content:center;border:2px solid white;">+7</div>
+        </div>
+        <div class="circle-stats">
+          <div class="circle-stat"><div class="circle-stat-val">12</div><div class="circle-stat-label">Members</div></div>
+          <div class="circle-stat"><div class="circle-stat-val">3×</div><div class="circle-stat-label">Per Week</div></div>
+          <div class="circle-stat"><div class="circle-stat-val">6mo</div><div class="circle-stat-label">Running</div></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <div style="font-size:12px;color:var(--muted);">Coordinator: <strong>Priya R.</strong></div>
+          <div style="font-size:12px;color:var(--muted);">₹10,000/mo</div>
+        </div>
+      </div>
+
+      <div class="circle-card" style="border-left-color:var(--gold)">
+        <div class="circle-name">🧘 Arulananda Nagar Yoga</div>
+        <div class="circle-location">📍 Community Hall, 5:00 PM · Tue/Thu/Sat</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <span class="badge badge-green">Healthy</span>
+          <span class="badge badge-gold">88% Attendance</span>
+        </div>
+        <div class="circle-members-row">
+          <div class="circle-member-dot">👵</div>
+          <div class="circle-member-dot">👴</div>
+          <div class="circle-member-dot">👵</div>
+          <div class="circle-member-dot">👴</div>
+          <div style="margin-left:-6px;width:30px;height:30px;border-radius:50%;background:var(--gold);color:white;font-size:10px;display:flex;align-items:center;justify-content:center;border:2px solid white;">+6</div>
+        </div>
+        <div class="circle-stats">
+          <div class="circle-stat"><div class="circle-stat-val">10</div><div class="circle-stat-label">Members</div></div>
+          <div class="circle-stat"><div class="circle-stat-val">3×</div><div class="circle-stat-label">Per Week</div></div>
+          <div class="circle-stat"><div class="circle-stat-val">4mo</div><div class="circle-stat-label">Running</div></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <div style="font-size:12px;color:var(--muted);">Coordinator: <strong>Arjun K.</strong></div>
+          <div style="font-size:12px;color:var(--muted);">₹9,500/mo</div>
+        </div>
+      </div>
+
+      <div class="circle-card" style="border-left-color:var(--red)">
+        <div class="circle-name">⚠️ Harbour Area Walking</div>
+        <div class="circle-location">📍 Harbour Road, 6:30 AM · Mon/Wed/Fri</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <span class="badge badge-red">At Risk</span>
+          <span class="badge badge-muted">65% Attendance</span>
+        </div>
+        <div class="circle-members-row">
+          <div class="circle-member-dot">👵</div>
+          <div class="circle-member-dot">👴</div>
+          <div class="circle-member-dot">👵</div>
+          <div style="margin-left:-6px;width:30px;height:30px;border-radius:50%;background:var(--red);color:white;font-size:10px;display:flex;align-items:center;justify-content:center;border:2px solid white;">+3</div>
+        </div>
+        <div class="circle-stats">
+          <div class="circle-stat"><div class="circle-stat-val">6</div><div class="circle-stat-label">Members</div></div>
+          <div class="circle-stat"><div class="circle-stat-val">3×</div><div class="circle-stat-label">Per Week</div></div>
+          <div class="circle-stat"><div class="circle-stat-val">2mo</div><div class="circle-stat-label">Running</div></div>
+        </div>
+        <div style="margin-top:14px;background:rgba(192,57,43,0.06);padding:8px;border-radius:6px;font-size:12px;color:var(--red)">
+          ⚠️ Action needed: 6 below break-even. Coordinator check-in overdue.
+        </div>
+      </div>
+    </div>
+
+    <!-- Coordinator Table -->
+    <div class="card">
+      <div class="card-header"><h3>Circle Coordinators</h3><span class="badge badge-orange">18 deployed</span></div>
+      <table class="table">
+        <thead><tr><th>Name</th><th>Circle</th><th>Level</th><th>Salary</th><th>Attendance Rate</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Priya Rajan</strong></td><td>Marina Beach Walk</td><td><span class="badge badge-gold">Senior</span></td><td>₹18,000</td><td>94%</td><td><span class="badge badge-green">Active</span></td></tr>
+          <tr><td><strong>Arjun Kumar</strong></td><td>Arulananda Yoga</td><td><span class="badge badge-blue">Mid</span></td><td>₹10,500</td><td>88%</td><td><span class="badge badge-green">Active</span></td></tr>
+          <tr><td><strong>Meena Devi</strong></td><td>Bharathi Bhajan</td><td><span class="badge badge-muted">Junior</span></td><td>₹8,500</td><td>76%</td><td><span class="badge badge-gold">Monitor</span></td></tr>
+          <tr><td><strong>Suresh G.</strong></td><td>VE Road Music</td><td><span class="badge badge-blue">Mid</span></td><td>₹9,800</td><td>82%</td><td><span class="badge badge-green">Active</span></td></tr>
+          <tr><td><strong>Kavya S.</strong></td><td>Harbour Walking</td><td><span class="badge badge-muted">Junior</span></td><td>₹8,000</td><td>65%</td><td><span class="badge badge-red">Action</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: MEMBERS
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-members">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Member Registry</div>
+        <div class="section-sub">247 active members · CAC ₹210 avg</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <input class="form-input" style="width:200px" placeholder="🔍 Search members…" oninput="filterMembers(this.value)">
+        <button class="btn btn-primary" onclick="openModal('add-member-modal')">+ Enrol Member</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn btn-outline btn-sm" onclick="filterByType('all',this)" style="border-color:var(--saffron);color:var(--saffron)">All (247)</button>
+      <button class="btn btn-outline btn-sm" onclick="filterByType('individual',this)">Individual (180)</button>
+      <button class="btn btn-outline btn-sm" onclick="filterByType('nri',this)">NRI Plan (52)</button>
+      <button class="btn btn-outline btn-sm" onclick="filterByType('corporate',this)">Corporate (15)</button>
+    </div>
+
+    <div class="card">
+      <table class="table" id="members-table">
+        <thead><tr><th>Member</th><th>Age</th><th>Circle</th><th>Plan</th><th>Attendance</th><th>Last Active</th><th>Actions</th></tr></thead>
+        <tbody id="members-tbody">
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">👵</span><div><div style="font-weight:600">Saroja Krishnamurthy</div><div style="font-size:11px;color:var(--muted)">+91 94432 12345</div></div></div></td><td>67</td><td>Marina Beach Walk</td><td><span class="badge badge-orange">Individual</span></td><td>96%</td><td>Today</td><td><button class="btn btn-ghost btn-sm">👁 View</button><button class="btn btn-ghost btn-sm" onclick="openModal('session-modal')">📹</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">👴</span><div><div style="font-weight:600">Rajan Venkataraman</div><div style="font-size:11px;color:var(--muted)">+91 98432 67890</div></div></div></td><td>72</td><td>VE Road Music</td><td><span class="badge badge-blue">NRI Plan</span></td><td>88%</td><td>Today</td><td><button class="btn btn-ghost btn-sm">👁 View</button><button class="btn btn-ghost btn-sm" onclick="openModal('session-modal')">📹</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">👵</span><div><div style="font-weight:600">Kamala Sundarajan</div><div style="font-size:11px;color:var(--muted)">+91 94879 34567</div></div></div></td><td>64</td><td>Arulananda Yoga</td><td><span class="badge badge-orange">Individual</span></td><td>92%</td><td>Yesterday</td><td><button class="btn btn-ghost btn-sm">👁 View</button><button class="btn btn-ghost btn-sm" onclick="openModal('session-modal')">📹</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">👴</span><div><div style="font-weight:600">K. Subramaniam</div><div style="font-size:11px;color:var(--muted)">+91 94001 23456</div></div></div></td><td>79</td><td>Palliative Care</td><td><span class="badge badge-red">Care Only</span></td><td>—</td><td>Today</td><td><button class="btn btn-ghost btn-sm">👁 View</button><span class="badge badge-red" style="font-size:10px">🏥 Palliative</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">👵</span><div><div style="font-weight:600">Padma Iyer</div><div style="font-size:11px;color:var(--muted)">+91 98765 11234</div></div></div></td><td>61</td><td>Marina Beach Walk</td><td><span class="badge badge-green">Corporate</span></td><td>84%</td><td>2 days ago</td><td><button class="btn btn-ghost btn-sm">👁 View</button><button class="btn btn-ghost btn-sm" onclick="openModal('session-modal')">📹</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: PALLIATIVE CARE
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-palliative">
+    <div class="section-header">
+      <div>
+        <div class="section-title">💛 Palliative Companion Layer</div>
+        <div class="section-sub">"No one in our circle should face illness or grief alone."</div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('care-modal')">+ Add Care Case</button>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card red" data-icon="🏥" style="border-top-color:var(--red)">
+        <div class="stat-value" style="color:var(--red)">4</div>
+        <div class="stat-label">High Priority Cases</div>
+      </div>
+      <div class="stat-card gold" data-icon="💛" style="border-top-color:var(--gold)">
+        <div class="stat-value" style="color:#8a6d00">8</div>
+        <div class="stat-label">Medium Priority</div>
+      </div>
+      <div class="stat-card green" data-icon="✅" style="border-top-color:var(--green)">
+        <div class="stat-value" style="color:var(--green)">23</div>
+        <div class="stat-label">Active Volunteers</div>
+      </div>
+      <div class="stat-card orange" data-icon="📞">
+        <div class="stat-value">142</div>
+        <div class="stat-label">Check-ins This Week</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div style="font-weight:600;font-size:14px;margin-bottom:12px;color:var(--red)">🔴 HIGH PRIORITY</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="care-card">
+          <div>
+            <div class="care-name">K. Subramaniam, 79</div>
+            <div class="care-detail">📍 Harbour Road · Bedridden · Family in Chennai</div>
+            <div style="margin-top:6px;display:flex;gap:6px">
+              <span class="badge badge-red">Bedridden</span>
+              <span class="badge badge-muted">Last visit: 2 days ago</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Volunteer: Kavya S.</div>
+            <button class="btn btn-outline btn-sm" onclick="showToast('📞 Connecting to volunteer Kavya S…')">Call Volunteer</button>
+          </div>
+        </div>
+        <div class="care-card">
+          <div>
+            <div class="care-name">Meenakshi Ammal, 84</div>
+            <div class="care-detail">📍 Spic Nagar · Dementia · Lives alone</div>
+            <div style="margin-top:6px;display:flex;gap:6px">
+              <span class="badge badge-red">Daily Check-in</span>
+              <span class="badge badge-green">Last visit: Today</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Volunteer: Priya R.</div>
+            <button class="btn btn-outline btn-sm" onclick="showToast('📋 Opening care log for Meenakshi Ammal…')">View Log</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-weight:600;font-size:14px;margin-bottom:12px;color:#8a6d00">🟡 MEDIUM PRIORITY</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="care-card medium">
+          <div>
+            <div class="care-name">Ramaswamy Pillai, 76</div>
+            <div class="care-detail">📍 VOC Nagar · Recovering post-surgery</div>
+            <div style="margin-top:6px"><span class="badge badge-gold">Post-surgery</span></div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">3x/week visits</div>
+            <button class="btn btn-outline btn-sm" onclick="showToast('✅ Check-in logged for Ramaswamy Pillai')">Log Check-in</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volunteer Training -->
+    <div class="card" style="margin-top:20px">
+      <div class="card-header"><h3>Volunteer Training Pipeline</h3><button class="btn btn-outline btn-sm" onclick="showToast('📨 Training invite sent!')">Invite Volunteers</button></div>
+      <div class="card-pad">
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <div style="text-align:center;padding:16px;background:var(--blush);border-radius:10px;min-width:120px">
+            <div style="font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:600">23</div>
+            <div style="font-size:11px;color:var(--muted)">Certified Volunteers</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--blush);border-radius:10px;min-width:120px">
+            <div style="font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:600">7</div>
+            <div style="font-size:11px;color:var(--muted)">In Training</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--blush);border-radius:10px;min-width:120px">
+            <div style="font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:600">3-day</div>
+            <div style="font-size:11px;color:var(--muted)">Certification</div>
+          </div>
+          <div style="flex:1;min-width:240px">
+            <div style="font-size:13px;font-weight:500;margin-bottom:8px">No medical skills required — just presence, empathy, and consistency.</div>
+            <div style="font-size:12px;color:var(--muted)">Training covers: active listening, grief support, daily check-in protocols, and escalation procedures.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: SKILL MARKETPLACE
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-skills">
+    <div class="section-header">
+      <div>
+        <div class="section-title">🎓 Skill Marketplace</div>
+        <div class="section-sub">Elders teach · Learners grow · Yugam earns 20%</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-outline" onclick="openModal('teacher-modal')">+ Onboard Teacher</button>
+        <button class="btn btn-primary" onclick="openModal('session-modal')">📹 Schedule Session</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" style="margin-bottom:24px">
+      <div class="stat-card orange" data-icon="👨‍🏫">
+        <div class="stat-value">34</div>
+        <div class="stat-label">Active Teachers</div>
+        <span class="stat-change up">↑ 4 new this month</span>
+      </div>
+      <div class="stat-card gold" data-icon="🎓">
+        <div class="stat-value">287</div>
+        <div class="stat-label">Students Enrolled</div>
+        <span class="stat-change up">↑ 23% growth</span>
+      </div>
+      <div class="stat-card green" data-icon="₹">
+        <div class="stat-value">₹1.71L</div>
+        <div class="stat-label">Teacher Earnings (MTD)</div>
+        <span class="stat-change up">Yugam earns ₹34,200</span>
+      </div>
+      <div class="stat-card blue" data-icon="📹">
+        <div class="stat-value">64</div>
+        <div class="stat-label">Sessions This Month</div>
+        <span class="stat-change up">via Google Meet</span>
+      </div>
+    </div>
+
+    <!-- Skill Cards Grid -->
+    <div class="grid-3" style="margin-bottom:24px">
+      <div class="skill-card">
+        <div class="skill-img" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">🍲</div>
+        <div class="skill-body">
+          <div class="skill-title">Traditional Tamil Cooking</div>
+          <div class="skill-teacher">Saroja Paati · 67 yrs</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Kollu rasam, Kuzhambu, Pittu, Appam — 23 students</div>
+          <div class="skill-footer">
+            <div><span class="skill-price">₹250/session</span><br><span class="skill-stars">★★★★★ 4.9</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleSession('Traditional Tamil Cooking','Saroja Paati')">📹 Schedule</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-img" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">🎻</div>
+        <div class="skill-body">
+          <div class="skill-title">Carnatic Violin</div>
+          <div class="skill-teacher">Rajan Thatha · 72 yrs</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Beginner to intermediate. 8 students enrolled</div>
+          <div class="skill-footer">
+            <div><span class="skill-price">₹400/session</span><br><span class="skill-stars">★★★★★ 5.0</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleSession('Carnatic Violin','Rajan Thatha')">📹 Schedule</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-img" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)">🎨</div>
+        <div class="skill-body">
+          <div class="skill-title">Kolam & Rangoli</div>
+          <div class="skill-teacher">Kamala Aunty · 64 yrs</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Traditional and modern patterns. 31 students</div>
+          <div class="skill-footer">
+            <div><span class="skill-price">₹200/session</span><br><span class="skill-stars">★★★★★ 4.8</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleSession('Kolam & Rangoli','Kamala Aunty')">📹 Schedule</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-img" style="background:linear-gradient(135deg,#fff8e1,#ffecb3)">🧵</div>
+        <div class="skill-body">
+          <div class="skill-title">Kanjivaram Silk Weaving</div>
+          <div class="skill-teacher">Padma Aunty · 61 yrs</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Traditional loom techniques. 6 students</div>
+          <div class="skill-footer">
+            <div><span class="skill-price">₹350/session</span><br><span class="skill-stars">★★★★★ 4.9</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleSession('Silk Weaving','Padma Aunty')">📹 Schedule</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-img" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">⭐</div>
+        <div class="skill-body">
+          <div class="skill-title">Vedic Astrology</div>
+          <div class="skill-teacher">Venkat Anna · 68 yrs</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Birth charts, Jyotish basics. 12 students</div>
+          <div class="skill-footer">
+            <div><span class="skill-price">₹500/session</span><br><span class="skill-stars">★★★★☆ 4.7</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleSession('Vedic Astrology','Venkat Anna')">📹 Schedule</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-img" style="background:linear-gradient(135deg,#e8eaf6,#c5cae9)">♟️</div>
+        <div class="skill-body">
+          <div class="skill-title">Chess Strategy</div>
+          <div class="skill-teacher">Krishnamurthy · 70 yrs</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Openings, mid-game tactics. 18 students</div>
+          <div class="skill-footer">
+            <div><span class="skill-price">₹150/session</span><br><span class="skill-stars">★★★★☆ 4.6</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleSession('Chess Strategy','Krishnamurthy')">📹 Schedule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue Table -->
+    <div class="card">
+      <div class="card-header"><h3>Marketplace Transactions</h3><span class="badge badge-green">20% commission auto-applied</span></div>
+      <table class="table">
+        <thead><tr><th>Session</th><th>Teacher</th><th>Date</th><th>Students</th><th>Total Earned</th><th>Yugam Cut</th><th>Meet Link</th></tr></thead>
+        <tbody>
+          <tr><td>Traditional Cooking</td><td>Saroja Paati</td><td>Today 10:00 AM</td><td>4</td><td>₹1,000</td><td><strong style="color:var(--green)">₹200</strong></td><td><a href="#" style="color:#1a73e8;font-size:12px;" onclick="openJoinMeet('https://meet.google.com/abc-defg-hij');return false">🎥 meet.google.com/abc-defg-hij</a></td></tr>
+          <tr><td>Carnatic Violin</td><td>Rajan Thatha</td><td>Today 6:30 PM</td><td>2</td><td>₹800</td><td><strong style="color:var(--green)">₹160</strong></td><td><a href="#" style="color:#1a73e8;font-size:12px;" onclick="openJoinMeet('https://meet.google.com/xyz-pqrs-tuv');return false">🎥 meet.google.com/xyz-pqrs-tuv</a></td></tr>
+          <tr><td>Kolam & Rangoli</td><td>Kamala Aunty</td><td>Yesterday</td><td>7</td><td>₹1,400</td><td><strong style="color:var(--green)">₹280</strong></td><td><span class="badge badge-muted">Completed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: SESSIONS (Google Meet Hub)
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-sessions">
+    <div class="section-header">
+      <div>
+        <div class="section-title">📹 Session Hub — Google Meet</div>
+        <div class="section-sub">Schedule, manage and join all virtual sessions in one place</div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('session-modal')">+ Schedule Session</button>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:24px">
+      <!-- Calendar-style today -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Today's Schedule</h3>
+          <span style="font-size:12px;color:var(--muted);">Wed, 11 Mar 2026</span>
+        </div>
+        <div class="card-pad">
+          <div class="session-item">
+            <div class="session-time"><div class="time">6:00</div><div class="ampm">AM</div></div>
+            <div class="session-info">
+              <div class="session-name">🚶 Marina Beach Walk</div>
+              <div class="session-detail">In-person · 12 members</div>
+            </div>
+            <span class="badge badge-green">Done</span>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">10:00</div><div class="ampm">AM</div></div>
+            <div class="session-info">
+              <div class="session-name">🍲 Traditional Cooking</div>
+              <div class="session-detail">Skill · Saroja Paati · 4 students</div>
+            </div>
+            <button class="session-join" onclick="openJoinMeet('https://meet.google.com/abc-defg-hij')">🎥 Join</button>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">2:00</div><div class="ampm">PM</div></div>
+            <div class="session-info">
+              <div class="session-name">📞 NRI Family Check-in</div>
+              <div class="session-detail">Rajan Family, Singapore · Coordinator call</div>
+            </div>
+            <button class="session-join" onclick="openJoinMeet('https://meet.google.com/nri-family-123')">🎥 Join</button>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">5:00</div><div class="ampm">PM</div></div>
+            <div class="session-info">
+              <div class="session-name">🧘 Chair Yoga</div>
+              <div class="session-detail">In-person · Community Hall</div>
+            </div>
+            <span class="badge badge-blue">Upcoming</span>
+          </div>
+          <div class="session-item">
+            <div class="session-time"><div class="time">6:30</div><div class="ampm">PM</div></div>
+            <div class="session-info">
+              <div class="session-name">🎻 Carnatic Violin</div>
+              <div class="session-detail">Skill · Rajan Thatha · 2 students</div>
+            </div>
+            <button class="session-join" onclick="openJoinMeet('https://meet.google.com/xyz-pqrs-tuv')">🎥 Join</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- How GMeet Integration Works -->
+      <div class="card">
+        <div class="card-header"><h3>🎥 Google Meet Integration</h3><span class="badge badge-green">Active</span></div>
+        <div class="card-pad">
+          <div style="background:#202124;border-radius:10px;padding:16px;color:white;margin-bottom:16px">
+            <div style="font-size:12px;opacity:0.6;margin-bottom:6px">HOW IT WORKS</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="background:#ea4335;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">1</div>
+                <div style="font-size:13px">You create a session and a Meet link is <strong>auto-generated</strong></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="background:#34a853;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">2</div>
+                <div style="font-size:13px">Teacher and students get WhatsApp + SMS invite with link</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="background:#4285f4;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">3</div>
+                <div style="font-size:13px">One-tap Join button — no account needed for elders</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="background:#fbbc04;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">4</div>
+                <div style="font-size:13px">Attendance auto-recorded · Payment triggered on completion</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--blush);border-radius:8px">
+              <span style="font-size:13px">📱 WhatsApp reminders</span>
+              <span class="badge badge-green">Active</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--blush);border-radius:8px">
+              <span style="font-size:13px">📧 Email invites to NRI families</span>
+              <span class="badge badge-green">Active</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--blush);border-radius:8px">
+              <span style="font-size:13px">💳 Auto-payment on session end</span>
+              <span class="badge badge-green">Active</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--blush);border-radius:8px">
+              <span style="font-size:13px">📊 Attendance tracking</span>
+              <span class="badge badge-blue">Beta</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Sessions Table -->
+    <div class="card">
+      <div class="card-header"><h3>Upcoming Sessions — Next 7 Days</h3></div>
+      <table class="table">
+        <thead><tr><th>Session</th><th>Type</th><th>Teacher/Host</th><th>Date & Time</th><th>Students</th><th>Meet Link</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Kolam & Rangoli</strong></td>
+            <td><span class="badge badge-orange">Skill</span></td>
+            <td>Kamala Aunty</td>
+            <td>Thu 12 Mar, 11:00 AM</td>
+            <td>7</td>
+            <td><a href="#" style="color:#1a73e8;font-size:12px" onclick="openJoinMeet('https://meet.google.com/klm-nopq-rst');return false">🎥 meet.google.com/klm…</a></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('📤 Invite sent to all 7 students!')">Send Invite</button></td>
+          </tr>
+          <tr>
+            <td><strong>Chess Strategy</strong></td>
+            <td><span class="badge badge-orange">Skill</span></td>
+            <td>Krishnamurthy</td>
+            <td>Fri 13 Mar, 4:00 PM</td>
+            <td>5</td>
+            <td><a href="#" style="color:#1a73e8;font-size:12px" onclick="openJoinMeet('https://meet.google.com/stu-vwxy-z12');return false">🎥 meet.google.com/stu…</a></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('📤 Invite sent to all 5 students!')">Send Invite</button></td>
+          </tr>
+          <tr>
+            <td><strong>NRI Family — Sharma</strong></td>
+            <td><span class="badge badge-blue">NRI Check-in</span></td>
+            <td>Coordinator: Priya</td>
+            <td>Sat 14 Mar, 3:00 PM</td>
+            <td>Family of 3</td>
+            <td><a href="#" style="color:#1a73e8;font-size:12px" onclick="openJoinMeet('https://meet.google.com/nri-sharma-456');return false">🎥 meet.google.com/nri…</a></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('📤 NRI family notified via email!')">Send Invite</button></td>
+          </tr>
+          <tr>
+            <td><strong>Vedic Astrology</strong></td>
+            <td><span class="badge badge-orange">Skill</span></td>
+            <td>Venkat Anna</td>
+            <td>Sun 15 Mar, 10:00 AM</td>
+            <td>6</td>
+            <td><a href="#" style="color:#1a73e8;font-size:12px" onclick="openJoinMeet('https://meet.google.com/ast-rlgy-789');return false">🎥 meet.google.com/ast…</a></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('📤 Invite sent!')">Send Invite</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: JOURNEYS
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-journeys">
+    <div class="section-header">
+      <div>
+        <div class="section-title">✈️ Journeys Programme</div>
+        <div class="section-sub">Curated travel exclusively for 60+ · 35–45% gross margin</div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('journey-modal')">+ Create Journey</button>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:24px">
+      <div class="journey-card">
+        <div class="journey-header-img" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">
+          <span class="journey-emoji">🕌</span>
+          <div class="journey-price-tag">₹18,000/person</div>
+        </div>
+        <div class="journey-body">
+          <div class="journey-title">Char Dham Yatra 2026</div>
+          <div class="journey-meta">📅 April 15–28 · 14 days · Group of 24 (24/28 seats)</div>
+          <div class="journey-features">
+            <span class="badge badge-orange">Spiritual</span>
+            <span class="badge badge-green">Medical Support</span>
+            <span class="badge badge-muted">Doctor On Call</span>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Booking progress — 24/28 seats</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn btn-outline btn-sm" style="flex:1" onclick="showToast('📋 Char Dham itinerary opened!')">View Itinerary</button>
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('✅ 4 seats remaining — promoting now!')">Promote</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header-img" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">
+          <span class="journey-emoji">🌿</span>
+          <div class="journey-price-tag">₹8,500/person</div>
+        </div>
+        <div class="journey-body">
+          <div class="journey-title">Kodaikanal Nature Retreat</div>
+          <div class="journey-meta">📅 May 3–7 · 5 days · Group of 14 (10/20 seats)</div>
+          <div class="journey-features">
+            <span class="badge badge-green">Nature</span>
+            <span class="badge badge-muted">Vegetarian Meals</span>
+            <span class="badge badge-blue">Yoga Mornings</span>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Booking progress — 10/20 seats</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn btn-outline btn-sm" style="flex:1" onclick="showToast('📋 Kodaikanal itinerary opened!')">View Itinerary</button>
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('📣 Promoted to all circles via WhatsApp!')">Promote</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header-img" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">
+          <span class="journey-emoji">🏛️</span>
+          <div class="journey-price-tag">₹6,200/person</div>
+        </div>
+        <div class="journey-body">
+          <div class="journey-title">Tanjore Heritage Circuit</div>
+          <div class="journey-meta">📅 May 20–23 · 4 days · 8/15 seats filled</div>
+          <div class="journey-features">
+            <span class="badge badge-gold">Heritage</span>
+            <span class="badge badge-muted">Tamil-Speaking Guide</span>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Booking progress — 8/15 seats</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:53%"></div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn btn-outline btn-sm" style="flex:1">View Itinerary</button>
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('📣 Tanjore trip promoted!')">Promote</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header-img" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)">
+          <span class="journey-emoji">🌏</span>
+          <div class="journey-price-tag">₹45,000/person</div>
+        </div>
+        <div class="journey-body">
+          <div class="journey-title">Singapore & Malaysia Tour</div>
+          <div class="journey-meta">📅 Jun 10–18 · 9 days · 5/16 seats filled</div>
+          <div class="journey-features">
+            <span class="badge badge-blue">International</span>
+            <span class="badge badge-green">Full Insurance</span>
+            <span class="badge badge-muted">NRI Gift Available</span>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Booking progress — 5/16 seats</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:31%"></div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn btn-outline btn-sm" style="flex:1">View Itinerary</button>
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('🌏 NRI gift campaign launched for Singapore tour!')">NRI Gift</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: REVENUE
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-revenue">
+    <div class="section-title" style="margin-bottom:24px">₹ Revenue Dashboard</div>
+
+    <div class="stats-grid">
+      <div class="stat-card orange" data-icon="📈">
+        <div class="stat-value">₹4.2L</div>
+        <div class="stat-label">Monthly ARR</div>
+        <span class="stat-change up">↑ 28% MoM</span>
+      </div>
+      <div class="stat-card gold" data-icon="👤">
+        <div class="stat-value">₹1,380</div>
+        <div class="stat-label">Avg Rev / Member / Year</div>
+      </div>
+      <div class="stat-card green" data-icon="💰">
+        <div class="stat-value">₹210</div>
+        <div class="stat-label">Customer Acquisition Cost</div>
+        <span class="stat-change up">Target: ₹180–240</span>
+      </div>
+      <div class="stat-card blue" data-icon="⚖️">
+        <div class="stat-value">8</div>
+        <div class="stat-label">Break-even Members/Circle</div>
+        <span class="stat-change up">Avg: 11 members</span>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <div class="card-header"><h3>5-Year Projection</h3></div>
+        <div class="card-pad">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:60px;font-size:12px;color:var(--muted)">Year 1</div>
+              <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:4%"></div></div>
+              <div style="width:100px;font-size:13px;font-weight:600;text-align:right">₹55–75L <span style="font-weight:400;color:var(--muted);font-size:11px">(800 members)</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:60px;font-size:12px;color:var(--muted)">Year 2</div>
+              <div class="progress-bar" style="flex:1"><div class="progress-fill gold" style="width:22%"></div></div>
+              <div style="width:100px;font-size:13px;font-weight:600;text-align:right">₹4–5Cr</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:60px;font-size:12px;color:var(--muted)">Year 3</div>
+              <div class="progress-bar" style="flex:1"><div class="progress-fill green" style="width:48%"></div></div>
+              <div style="width:100px;font-size:13px;font-weight:600;text-align:right">₹22–30Cr</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:60px;font-size:12px;color:var(--muted)">Year 5</div>
+              <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:100%"></div></div>
+              <div style="width:100px;font-size:13px;font-weight:600;text-align:right">₹150–200Cr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Revenue Streams</h3></div>
+        <div class="card-pad">
+          <table class="table">
+            <thead><tr><th>Stream</th><th>Price</th><th>Current</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Individual Membership</td><td>₹999/yr</td><td>₹82,251</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td>NRI Family Peace Plan</td><td>₹2,499/mo</td><td>₹1,49,940</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td>Skill Marketplace (20%)</td><td>Commission</td><td>₹34,200</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td>Journeys Programme</td><td>35–45% margin</td><td>₹1,12,000</td><td><span class="badge badge-green">Active</span></td></tr>
+              <tr><td>Corporate Wellness</td><td>₹800–1,200/emp</td><td>₹40,000</td><td><span class="badge badge-blue">Pilot</span></td></tr>
+              <tr><td>Government Contracts</td><td>₹4–6K/elder/yr</td><td>—</td><td><span class="badge badge-muted">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: NRI FAMILIES
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-nri">
+    <div class="section-header">
+      <div>
+        <div class="section-title">🌏 NRI Family Peace Plan</div>
+        <div class="section-sub">₹2,499/mo · Daily reports · Coordinator calls · Priority SOS</div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('nri-modal')">+ Enrol NRI Family</button>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card orange" data-icon="🌏">
+        <div class="stat-value">52</div>
+        <div class="stat-label">NRI Family Subscribers</div>
+        <span class="stat-change up">↑ 8 new this quarter</span>
+      </div>
+      <div class="stat-card gold" data-icon="₹">
+        <div class="stat-value">₹1.3L</div>
+        <div class="stat-label">Monthly NRI Revenue</div>
+      </div>
+      <div class="stat-card green" data-icon="✅">
+        <div class="stat-value">98%</div>
+        <div class="stat-label">Renewal Rate</div>
+        <span class="stat-change up">Highest of all plans</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-header"><h3>Active NRI Subscriptions</h3></div>
+      <table class="table">
+        <thead><tr><th>Family</th><th>Location</th><th>Elder Member</th><th>Plan Start</th><th>Last Report</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Rajan Family</strong></td><td>🇸🇬 Singapore</td><td>Venkata Rajan, 78 · Circle 2</td><td>Jan 2026</td><td>Today 7:00 AM ✅</td><td><button class="btn btn-ghost btn-sm" onclick="openJoinMeet('https://meet.google.com/nri-rajan-123')">📹 Family Call</button></td></tr>
+          <tr><td><strong>Sharma Family</strong></td><td>🇬🇧 London</td><td>Lakshmi Sharma, 71 · Circle 1</td><td>Feb 2026</td><td>Today 6:30 AM ✅</td><td><button class="btn btn-ghost btn-sm" onclick="openJoinMeet('https://meet.google.com/nri-sharma-456')">📹 Family Call</button></td></tr>
+          <tr><td><strong>Krishnan Family</strong></td><td>🇺🇸 San Francisco</td><td>Murugan K., 74 · Circle 4</td><td>Mar 2026</td><td>Yesterday ✅</td><td><button class="btn btn-ghost btn-sm" onclick="openJoinMeet('https://meet.google.com/nri-kris-789')">📹 Family Call</button></td></tr>
+          <tr><td><strong>Iyer Family</strong></td><td>🇦🇺 Melbourne</td><td>Saraswathi Iyer, 66 · Circle 1</td><td>Jan 2026</td><td>Today 7:15 AM ✅</td><td><button class="btn btn-ghost btn-sm" onclick="openJoinMeet('https://meet.google.com/nri-iyer-012')">📹 Family Call</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-header"><h3>🎁 NRI Gift Journey Feature</h3><span class="badge badge-gold">Premium</span></div>
+      <div class="card-pad">
+        <div style="display:flex;gap:20px;align-items:center">
+          <div style="font-size:48px">🎁</div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:16px;margin-bottom:4px">"Gift your parent the journey they always wanted"</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px">NRI children can purchase Journeys as a gift directly from the platform. Includes personal dedication note, WhatsApp notification, and care coordinator briefing.</div>
+            <div style="display:flex;gap:10px">
+              <button class="btn btn-primary btn-sm" onclick="showToast('🌏 NRI Gift Journey page opened!')">Browse Journeys to Gift</button>
+              <button class="btn btn-outline btn-sm" onclick="showToast('📧 Gift voucher generated!')">Generate Gift Voucher</button>
+            </div>
+          </div>
+          <div style="background:var(--blush);padding:16px;border-radius:10px;text-align:center;min-width:120px">
+            <div style="font-size:24px;font-family:'Cormorant Garamond',serif;font-weight:600">14</div>
+            <div style="font-size:11px;color:var(--muted)">Gifts sent this year</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: ONBOARDING PLAYBOOK
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-onboarding">
+    <div class="section-title" style="margin-bottom:6px">📋 Onboarding Playbook</div>
+    <div class="section-sub" style="margin-bottom:24px">Six groups · Each with a different channel, message, and journey</div>
+
+    <div class="grid-3" style="margin-bottom:24px">
+      <div class="playbook-card" style="border-top-color:var(--saffron)">
+        <div class="playbook-num">01</div>
+        <div class="playbook-title">👵 Elderly Members</div>
+        <div class="playbook-how">Via: RWA meetings, temples, PHC doctors</div>
+        <div class="playbook-cta">Human-first. Never leads with the app.</div>
+        <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="showToast('📝 Elderly onboarding script downloaded!')">Get Script</button></div>
+      </div>
+      <div class="playbook-card" style="border-top-color:var(--green)">
+        <div class="playbook-num">02</div>
+        <div class="playbook-title">🤝 Circle Coordinators</div>
+        <div class="playbook-how">Via: NSS volunteers, social work graduates, local youth</div>
+        <div class="playbook-cta">3-day paid certification. Career path to ₹18K/mo.</div>
+        <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="showToast('📝 Coordinator recruitment kit opened!')">Recruit Kit</button></div>
+      </div>
+      <div class="playbook-card" style="border-top-color:var(--blue)">
+        <div class="playbook-num">03</div>
+        <div class="playbook-title">🌏 NRI Families</div>
+        <div class="playbook-how">Via: LinkedIn Tamil diaspora posts, Tamil associations</div>
+        <div class="playbook-cta">Selling peace of mind, not a product.</div>
+        <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="openModal('nri-modal')">Enrol Family</button></div>
+      </div>
+      <div class="playbook-card" style="border-top-color:var(--gold)">
+        <div class="playbook-num">04</div>
+        <div class="playbook-title">🏢 Corporate Partners</div>
+        <div class="playbook-how">Via: BRSR reporters, ESG leads, HR directors</div>
+        <div class="playbook-cta">₹800/employee = parent care benefit + ESG metric.</div>
+        <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="showToast('📊 Corporate pitch deck ready!')">Pitch Deck</button></div>
+      </div>
+      <div class="playbook-card" style="border-top-color:var(--red)">
+        <div class="playbook-num">05</div>
+        <div class="playbook-title">🎓 Elder Teachers</div>
+        <div class="playbook-how">Via: Inside existing Circles, personal invitation</div>
+        <div class="playbook-cta">Teaching is a legacy, not income. First class is free.</div>
+        <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="openModal('teacher-modal')">Onboard Teacher</button></div>
+      </div>
+      <div class="playbook-card" style="border-top-color:var(--saffron)">
+        <div class="playbook-num">06</div>
+        <div class="playbook-title">✈️ Journey Participants</div>
+        <div class="playbook-how">Via: Circle WhatsApp, NRI gift page, temple tie-ups</div>
+        <div class="playbook-cta">'The trip you always promised yourself.'</div>
+        <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="showPage('journeys',null)">View Journeys</button></div>
+      </div>
+    </div>
+
+    <!-- 90-day plan -->
+    <div class="card">
+      <div class="card-header"><h3>🚀 90-Day Launch Plan</h3><span class="badge badge-orange">Proof of Concept</span></div>
+      <div class="card-pad">
+        <div class="grid-3">
+          <div>
+            <div style="font-weight:600;color:var(--saffron);margin-bottom:8px">Phase 1 · Days 1–30</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:6px">
+              <div>✅ Register Yugam Pvt Ltd</div>
+              <div>✅ Apply for DPIIT recognition</div>
+              <div>⏳ Hire 5 Circle Coordinators</div>
+              <div>⏳ Select 5 circle locations</div>
+              <div>⏳ Build app MVP (Flutter)</div>
+              <div>⏳ Tamil onboarding materials</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:600;color:var(--gold);margin-bottom:8px">Phase 2 · Days 31–60</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:6px">
+              <div>⏳ Launch 5 Circles (8–10 elders)</div>
+              <div>⏳ 3 sessions/week per circle</div>
+              <div>⏳ Onboard first 10 NRI families</div>
+              <div>⏳ Approach 2 RWAs + 3 temples</div>
+              <div>⏳ First temple half-day trip</div>
+              <div>⏳ 5 skill marketplace teachers</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:600;color:var(--green);margin-bottom:8px">Phase 3 · Days 61–90</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:6px">
+              <div>⏳ 50+ active members</div>
+              <div>⏳ 10 NRI family subscribers paying</div>
+              <div>⏳ 3 documented case studies</div>
+              <div>⏳ First corporate pitch</div>
+              <div>⏳ CSR grants (Ashok Leyland, TVS)</div>
+              <div>⏳ Investor demo day</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE: SETTINGS
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-settings">
+    <div class="section-title" style="margin-bottom:24px">⚙️ Platform Settings</div>
+    <div class="settings-section">
+      <div style="padding:14px 20px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border-bottom:1px solid rgba(44,26,14,0.06)">Integrations</div>
+      <div class="settings-row">
+        <div><div class="settings-label">🎥 Google Meet Auto-Link</div><div class="settings-desc">Automatically generate Meet links for every skill session and NRI call</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">📱 WhatsApp Session Reminders</div><div class="settings-desc">Send reminders 24h and 1h before each session</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">📧 NRI Daily Report Emails</div><div class="settings-desc">Auto-email activity reports to subscribed NRI families every morning</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">💳 Razorpay Auto-Payment</div><div class="settings-desc">Trigger payment collection when skill session ends</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">🆘 SOS Alert System</div><div class="settings-desc">Emergency SOS calls coordinator + nearest family member instantly</div></div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div style="padding:14px 20px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border-bottom:1px solid rgba(44,26,14,0.06)">Organisation</div>
+      <div class="settings-row">
+        <div><div class="settings-label">Base City</div><div class="settings-desc">Current pilot city</div></div>
+        <span class="badge badge-orange">Thoothukudi, Tamil Nadu</span>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">Commission Rate</div><div class="settings-desc">Skill marketplace platform fee</div></div>
+        <span class="badge badge-orange">20%</span>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">Free Trial Duration</div><div class="settings-desc">Days for new elder members before payment required</div></div>
+        <span class="badge badge-orange">60 days</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ═══════ MODALS ═══════ -->
+
+<!-- Session / GMeet Modal -->
+<div class="overlay" id="session-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📹 Schedule a Google Meet Session</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('session-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Session Type</label>
+        <select class="form-input" id="session-type" onchange="updateSessionType()">
+          <option value="skill">🎓 Skill Marketplace Session</option>
+          <option value="nri">🌏 NRI Family Check-in</option>
+          <option value="palliative">💛 Palliative Companion Call</option>
+          <option value="coordinator">👥 Coordinator Meeting</option>
+        </select>
+      </div>
+      <div class="form-group" id="teacher-field">
+        <label class="form-label">Teacher / Host</label>
+        <select class="form-input">
+          <option>Saroja Paati — Traditional Cooking</option>
+          <option>Rajan Thatha — Carnatic Violin</option>
+          <option>Kamala Aunty — Kolam & Rangoli</option>
+          <option>Padma Aunty — Silk Weaving</option>
+          <option>Venkat Anna — Vedic Astrology</option>
+          <option>Krishnamurthy — Chess Strategy</option>
+        </select>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input type="date" class="form-input" value="2026-03-12">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time</label>
+          <input type="time" class="form-input" value="10:00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duration</label>
+        <select class="form-input">
+          <option>30 minutes</option>
+          <option selected>60 minutes</option>
+          <option>90 minutes</option>
+          <option>120 minutes</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Max Students</label>
+        <input type="number" class="form-input" value="10" min="1" max="50">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Session Notes (optional)</label>
+        <input type="text" class="form-input" placeholder="e.g. Bring ingredients list, first class free…">
+      </div>
+
+      <!-- GMeet Preview -->
+      <div class="gmeet-preview">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:20px">🎥</span>
+          <span style="font-size:14px;font-weight:600">Google Meet Link — Auto Generated</span>
+          <div class="gmeet-badge">✓ Ready</div>
+        </div>
+        <div class="gmeet-link">
+          <a href="https://meet.google.com/new" target="_blank" id="meet-link-preview">meet.google.com/yugam-skill-abc123</a>
+          <button onclick="copyMeetLink()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px">Copy</button>
+        </div>
+        <div class="gmeet-info-row">
+          <span>📱 WhatsApp invite auto-sent</span>
+          <span>📧 Email sent to NRI families</span>
+          <span>💳 Payment triggered on end</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('session-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createSession()">✅ Create Session & Send Invites</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Member Modal -->
+<div class="overlay" id="add-member-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👵 Enrol New Member</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('add-member-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" placeholder="e.g. Saraswathi Iyer">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age</label>
+          <input type="number" class="form-input" placeholder="60+" min="60" max="100">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number</label>
+        <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Locality / Area</label>
+        <input type="text" class="form-input" placeholder="e.g. Arulananda Nagar, Thoothukudi">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assign to Circle</label>
+        <select class="form-input">
+          <option>Marina Beach Morning Walk</option>
+          <option>Arulananda Nagar Yoga</option>
+          <option>Bharathi Park Bhajan Circle</option>
+          <option>VE Road Music Circle</option>
+          <option>— Create new circle —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Membership Plan</label>
+        <select class="form-input">
+          <option>Individual — ₹999/year</option>
+          <option>NRI Family Peace Plan — ₹2,499/month</option>
+          <option>Corporate Wellness (Sponsored)</option>
+          <option>Free Trial — 60 days</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('add-member-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addMember()">✅ Enrol Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- Teacher Onboard Modal -->
+<div class="overlay" id="teacher-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🎓 Onboard Elder Teacher</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('teacher-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:rgba(232,101,26,0.08);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;border-left:3px solid var(--saffron)">
+        <strong>Teaching is a legacy, not income.</strong> First class is free — then ₹200–500/session. Yugam takes 20% platform fee.
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Teacher Name</label>
+          <input type="text" class="form-input" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age</label>
+          <input type="number" class="form-input" placeholder="60+">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Skill / Expertise</label>
+        <input type="text" class="form-input" placeholder="e.g. Carnatic Music, Traditional Cooking, Chess…">
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Price per Session (₹)</label>
+          <input type="number" class="form-input" placeholder="200–500" min="100" max="1000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Session Mode</label>
+          <select class="form-input">
+            <option>Google Meet (Online)</option>
+            <option>In-person</option>
+            <option>Both</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile for WhatsApp</label>
+        <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('teacher-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="onboardTeacher()">✅ Onboard Teacher</button>
+    </div>
+  </div>
+</div>
+
+<!-- NRI Modal -->
+<div class="overlay" id="nri-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🌏 Enrol NRI Family Plan</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('nri-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">NRI Family Name</label>
+        <input type="text" class="form-input" placeholder="e.g. Sharma Family">
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Country of Residence</label>
+          <select class="form-input">
+            <option>🇸🇬 Singapore</option>
+            <option>🇬🇧 United Kingdom</option>
+            <option>🇺🇸 United States</option>
+            <option>🇦🇺 Australia</option>
+            <option>🇨🇦 Canada</option>
+            <option>🇦🇪 UAE</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">NRI Contact Email</label>
+          <input type="email" class="form-input" placeholder="family@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Elder Member in Tamil Nadu</label>
+        <input type="text" class="form-input" placeholder="Parent/relative name, age, city">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assign Coordinator</label>
+        <select class="form-input">
+          <option>Priya Rajan (Marina Beach)</option>
+          <option>Arjun Kumar (Arulananda)</option>
+          <option>Suresh G. (VE Road)</option>
+        </select>
+      </div>
+      <div style="background:var(--blush);border-radius:10px;padding:14px;font-size:13px">
+        <strong>Plan includes:</strong> Daily WhatsApp report · 2 coordinator calls/week · Priority SOS · Monthly Google Meet family call · Journey gifting access
+        <div style="margin-top:8px;font-weight:600;color:var(--saffron)">₹2,499/month · Billed monthly · Cancel anytime</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('nri-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="enrolNRI()">✅ Enrol & Send Welcome Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- Join Meet Modal -->
+<div class="overlay" id="join-meet-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title">🎥 Join Google Meet Session</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('join-meet-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="gmeet-preview">
+        <div style="text-align:center;padding:16px 0">
+          <div style="font-size:48px;margin-bottom:8px">🎥</div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:4px">Ready to join?</div>
+          <div class="gmeet-link" style="justify-content:center">
+            <a id="join-meet-link" href="#" target="_blank" style="color:#8ab4f8;font-size:14px">Loading...</a>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:10px">
+          <button onclick="joinMeetNow()" style="background:#1a73e8;color:white;border:none;padding:12px 28px;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:8px">
+            🎥 Join Now
+          </button>
+          <button onclick="copyMeetLink()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:12px 20px;border-radius:8px;font-size:14px;cursor:pointer">
+            📋 Copy Link
+          </button>
+        </div>
+        <div style="margin-top:14px;font-size:12px;opacity:0.6;text-align:center">No account needed · Works on mobile · Opens in new tab</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ── NAVIGATION ──
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+
+  const titles = {
+    dashboard: 'Dashboard',
+    circles: 'Neighbourhood Circles',
+    members: 'Member Registry',
+    palliative: 'Palliative Care Layer',
+    skills: 'Skill Marketplace',
+    sessions: 'Session Hub — Google Meet',
+    journeys: 'Journeys Programme',
+    revenue: 'Revenue Dashboard',
+    nri: 'NRI Family Plans',
+    onboarding: 'Onboarding Playbook',
+    settings: 'Settings'
+  };
+  document.getElementById('page-title').textContent = titles[id] || '';
+
+  if (el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+// ── MODALS ──
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// ── GOOGLE MEET FLOW ──
+let currentMeetUrl = '';
+function openJoinMeet(url) {
+  currentMeetUrl = url;
+  document.getElementById('join-meet-link').href = url;
+  document.getElementById('join-meet-link').textContent = url;
+  openModal('join-meet-modal');
+}
+
+function joinMeetNow() {
+  if (currentMeetUrl) {
+    window.open(currentMeetUrl, '_blank');
+    showToast('🎥 Opening Google Meet in new tab…');
+  }
+}
+
+function openScheduleSession(skill, teacher) {
+  openModal('session-modal');
+  // Pre-fill would happen here in a real app
+}
+
+function copyMeetLink() {
+  const url = currentMeetUrl || 'meet.google.com/yugam-skill-abc123';
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('📋 Meet link copied to clipboard!');
+  }).catch(() => {
+    showToast('📋 Link: ' + url);
+  });
+}
+
+function createSession() {
+  closeModal('session-modal');
+  showToast('✅ Session created! Meet link sent via WhatsApp to all participants.');
+  // Generate random meet-style link
+  const chars = 'abcdefghijklmnopqrstuvwxyz';
+  const rand = () => Array.from({length:3},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+  document.getElementById('meet-link-preview').textContent = `meet.google.com/${rand()}-${rand()}-${rand()}`;
+}
+
+function addMember() {
+  closeModal('add-member-modal');
+  showToast('👵 Member enrolled! WhatsApp welcome message sent.');
+}
+
+function onboardTeacher() {
+  closeModal('teacher-modal');
+  showToast('🎓 Teacher onboarded! First free session scheduled automatically.');
+}
+
+function enrolNRI() {
+  closeModal('nri-modal');
+  showToast('🌏 NRI Family enrolled! Welcome email + coordinator assignment done.');
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display = 'none', 3500);
+}
+
+// ── FILTER ──
+function filterMembers(q) {
+  document.querySelectorAll('#members-tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+function filterByType(type, btn) {
+  document.querySelectorAll('[onclick*="filterByType"]').forEach(b => {
+    b.style.borderColor = ''; b.style.color = '';
+  });
+  btn.style.borderColor = 'var(--saffron)';
+  btn.style.color = 'var(--saffron)';
+}
+
+// ── MINI BAR CHART ANIMATION ──
+setTimeout(() => {
+  document.querySelectorAll('.mini-bar').forEach((b, i) => {
+    const heights = [40,55,35,70,50,65,80,45,90,60];
+    b.style.height = (heights[i % heights.length] || 50) + '%';
+  });
+}, 300);
+</script>
+</body>
+</html>

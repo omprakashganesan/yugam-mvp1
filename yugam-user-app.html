@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>யுகம் Yugam — Your Circle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bark:     #2C1A0E;
+  --saffron:  #E8651A;
+  --saffron2: #F07B34;
+  --gold:     #C9A227;
+  --gold2:    #E8BE45;
+  --cream:    #FDF8F1;
+  --blush:    #F7EFE3;
+  --blush2:   #EFE0CC;
+  --red:      #C0392B;
+  --green:    #1E7A4A;
+  --green2:   #27AE60;
+  --teal:     #1A7A6E;
+  --blue:     #1A5276;
+  --blue2:    #2E86C1;
+  --muted:    #8A6F58;
+  --muted2:   #B89A80;
+  --white:    #FFFFFF;
+  --card-r:   18px;
+  --card-s:   0 4px 20px rgba(44,26,14,0.10);
+  --card-s2:  0 8px 32px rgba(44,26,14,0.15);
+  --safe-bot: env(safe-area-inset-bottom, 20px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #1a1008;
+  display: flex; justify-content: center; align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* ── PHONE SHELL ── */
+.phone-shell {
+  width: 390px;
+  height: 844px;
+  background: var(--cream);
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 0 12px #0d0805,
+    0 0 0 14px #2a1a0d,
+    0 40px 80px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dynamic island */
+.dynamic-island {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 34px; background: #0d0805;
+  border-radius: 20px; z-index: 999;
+}
+
+/* Status bar */
+.status-bar {
+  padding: 16px 28px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0; position: relative; z-index: 10;
+  height: 52px;
+}
+.status-time { font-size: 15px; font-weight: 700; color: var(--bark); }
+.status-icons { display: flex; gap: 5px; align-items: center; font-size: 13px; color: var(--bark); }
+
+/* ── SCREEN CONTAINER ── */
+.screen-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.screen {
+  position: absolute; inset: 0;
+  overflow-y: auto; overflow-x: hidden;
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.screen.active { display: flex; }
+.screen::-webkit-scrollbar { display: none; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  flex-shrink: 0;
+  background: var(--white);
+  border-top: 1px solid rgba(44,26,14,0.08);
+  display: flex;
+  padding: 8px 0 calc(8px + var(--safe-bot));
+  box-shadow: 0 -4px 20px rgba(44,26,14,0.07);
+  position: relative; z-index: 100;
+}
+.nav-tab {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 3px; cursor: pointer;
+  padding: 4px 0; border: none; background: none; outline: none;
+  transition: all 0.2s;
+}
+.nav-tab .nav-icon { font-size: 22px; transition: transform 0.2s; }
+.nav-tab .nav-label { font-size: 9px; font-weight: 700; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.2s; }
+.nav-tab.active .nav-label { color: var(--saffron); }
+.nav-tab.active .nav-icon { transform: scale(1.15); }
+.nav-tab:active .nav-icon { transform: scale(0.9); }
+
+/* ── GENERIC HEADER ── */
+.screen-header {
+  padding: 16px 20px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; position: sticky; top: 0; z-index: 50;
+  background: var(--cream);
+}
+.header-back {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blush); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: all 0.15s;
+}
+.header-back:active { transform: scale(0.9); background: var(--blush2); }
+.header-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--bark); }
+.header-action {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blush); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: all 0.15s;
+}
+.header-action:active { transform: scale(0.9); }
+
+/* ── CARDS ── */
+.card {
+  background: white; border-radius: var(--card-r);
+  box-shadow: var(--card-s); overflow: hidden;
+}
+.card-press { transition: transform 0.15s, box-shadow 0.15s; cursor: pointer; }
+.card-press:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(44,26,14,0.08); }
+
+/* ── BUTTONS ── */
+.btn-main {
+  background: var(--saffron); color: white;
+  border: none; border-radius: 14px;
+  padding: 14px 24px; font-family: 'Nunito', sans-serif;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(232,101,26,0.35);
+}
+.btn-main:active { transform: scale(0.97); box-shadow: none; }
+.btn-outline {
+  background: transparent; color: var(--saffron);
+  border: 2px solid var(--saffron); border-radius: 14px;
+  padding: 12px 20px; font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  width: 100%; transition: all 0.2s;
+}
+.btn-outline:active { background: rgba(232,101,26,0.08); transform: scale(0.97); }
+.btn-small {
+  padding: 8px 16px; font-size: 13px; font-weight: 700;
+  border-radius: 10px; border: none; cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-small:active { transform: scale(0.95); }
+.btn-s-orange { background: var(--saffron); color: white; }
+.btn-s-green { background: var(--green); color: white; }
+.btn-s-blue { background: #1a73e8; color: white; box-shadow: 0 2px 8px rgba(26,115,232,0.35); }
+.btn-s-ghost { background: var(--blush); color: var(--bark); }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+  white-space: nowrap;
+}
+.b-orange { background: rgba(232,101,26,0.12); color: var(--saffron); }
+.b-green  { background: rgba(30,122,74,0.12);  color: var(--green); }
+.b-gold   { background: rgba(201,162,39,0.15); color: #7a5f00; }
+.b-blue   { background: rgba(26,82,118,0.12);  color: var(--blue2); }
+.b-red    { background: rgba(192,57,43,0.10);  color: var(--red); }
+.b-muted  { background: var(--blush2); color: var(--muted); }
+
+/* ── PROGRESS ── */
+.prog-track { background: var(--blush2); border-radius: 6px; overflow: hidden; }
+.prog-fill  { border-radius: 6px; height: 100%; transition: width 0.8s ease; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+@keyframes spin   { to { transform: rotate(360deg); } }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes shimmer {
+  0%   { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
+.anim-fade { animation: fadeUp 0.35s ease both; }
+.anim-d1  { animation-delay: 0.05s; }
+.anim-d2  { animation-delay: 0.10s; }
+.anim-d3  { animation-delay: 0.15s; }
+.anim-d4  { animation-delay: 0.20s; }
+.anim-d5  { animation-delay: 0.25s; }
+
+/* ══════════════════════════════════════
+   SCREEN 1 — ONBOARDING / SPLASH
+══════════════════════════════════════ */
+#s-splash {
+  background: linear-gradient(160deg, #2C1A0E 0%, #4a2c18 60%, #6b3d20 100%);
+}
+.splash-circles {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.splash-circle {
+  position: absolute; border-radius: 50%;
+  background: rgba(232,101,26,0.08);
+}
+.splash-logo-wrap {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 32px 20px; text-align: center;
+}
+.splash-tamil {
+  font-family: 'Noto Sans Tamil', serif;
+  font-size: 60px; font-weight: 700; color: var(--saffron);
+  line-height: 1; animation: fadeUp 0.6s ease both;
+  text-shadow: 0 0 40px rgba(232,101,26,0.4);
+}
+.splash-eng {
+  font-family: 'Lora', serif; font-size: 24px; font-weight: 600;
+  color: rgba(255,255,255,0.9); letter-spacing: 8px;
+  margin-top: 6px; animation: fadeUp 0.6s 0.1s ease both;
+}
+.splash-tagline {
+  font-size: 15px; color: rgba(255,255,255,0.55); margin-top: 16px;
+  line-height: 1.6; animation: fadeUp 0.6s 0.2s ease both;
+}
+.splash-pillars {
+  display: flex; gap: 12px; margin-top: 32px;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.splash-pillar {
+  flex: 1; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 14px 8px; text-align: center;
+}
+.splash-pillar .sp-icon { font-size: 24px; }
+.splash-pillar .sp-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; font-weight: 600; }
+.splash-bottom {
+  padding: 20px 28px 32px;
+  display: flex; flex-direction: column; gap: 12px;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+.splash-btn-main {
+  background: var(--saffron); color: white; border: none;
+  border-radius: 16px; padding: 16px; font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 800; cursor: pointer; width: 100%;
+  box-shadow: 0 6px 20px rgba(232,101,26,0.45); transition: all 0.2s;
+}
+.splash-btn-main:active { transform: scale(0.97); }
+.splash-btn-sec {
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 16px; padding: 14px; font-family: 'Nunito', sans-serif;
+  font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; transition: all 0.2s;
+}
+.splash-free {
+  text-align: center; color: rgba(255,255,255,0.4);
+  font-size: 12px; margin-top: 4px;
+}
+
+/* ══════════════════════════════════════
+   SCREEN 2 — ONBOARDING STEPS
+══════════════════════════════════════ */
+#s-onboard {
+  background: var(--cream);
+}
+.onboard-hero {
+  height: 280px; position: relative; overflow: hidden;
+  display: flex; align-items: flex-end; padding: 24px;
+  flex-shrink: 0;
+}
+.onboard-emoji { font-size: 100px; position: absolute; top: 30px; right: 20px; opacity: 0.25; }
+.onboard-step-badge {
+  background: var(--saffron); color: white; border-radius: 20px;
+  padding: 5px 14px; font-size: 12px; font-weight: 700; margin-bottom: 10px;
+  display: inline-block;
+}
+.onboard-hero h2 { font-family: 'Lora', serif; font-size: 26px; font-weight: 700; line-height: 1.3; color: white; }
+.onboard-body { padding: 24px 24px 120px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+.ob-step { display: flex; gap: 16px; align-items: flex-start; }
+.ob-step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--saffron); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 15px; flex-shrink: 0;
+}
+.ob-step-text h4 { font-size: 15px; font-weight: 700; color: var(--bark); }
+.ob-step-text p  { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.onboard-dots { display: flex; gap: 8px; justify-content: center; padding: 16px 0; }
+.ob-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blush2); transition: all 0.3s; }
+.ob-dot.active { width: 24px; background: var(--saffron); border-radius: 4px; }
+.onboard-footer { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 24px 32px; background: linear-gradient(transparent, var(--cream) 40%); }
+
+/* ══════════════════════════════════════
+   SCREEN 3 — LANGUAGE SELECT
+══════════════════════════════════════ */
+.lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
+.lang-card {
+  background: white; border-radius: 16px; padding: 20px;
+  box-shadow: var(--card-s); text-align: center; cursor: pointer;
+  border: 2.5px solid transparent; transition: all 0.2s;
+}
+.lang-card.selected { border-color: var(--saffron); background: rgba(232,101,26,0.04); }
+.lang-card:active { transform: scale(0.96); }
+.lang-script { font-size: 28px; margin-bottom: 6px; }
+.lang-name { font-size: 14px; font-weight: 700; color: var(--bark); }
+.lang-native { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ══════════════════════════════════════
+   SCREEN 4 — HOME / DASHBOARD
+══════════════════════════════════════ */
+#s-home { background: var(--cream); }
+
+.home-header {
+  background: linear-gradient(150deg, #2C1A0E 0%, #4e2e18 100%);
+  padding: 20px 20px 80px; position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.home-header::after {
+  content: ''; position: absolute;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(232,101,26,0.15); right: -50px; top: -50px;
+}
+.home-header::before {
+  content: ''; position: absolute;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(201,162,39,0.1); left: -30px; bottom: 20px;
+}
+.home-greeting { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 4px; }
+.home-name { font-family: 'Lora', serif; font-size: 24px; font-weight: 700; color: white; }
+.home-name span { color: var(--gold2); }
+.home-subtitle { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+.home-notif-btn {
+  position: absolute; top: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); border: none; cursor: pointer;
+  font-size: 18px; display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.notif-dot-abs {
+  position: absolute; top: -2px; right: -2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--saffron); border: 2px solid var(--bark);
+}
+.home-top-row { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 4px; }
+
+/* Quick stats row */
+.home-stats-row {
+  display: flex; gap: 10px;
+  margin: -40px 16px 0; position: relative; z-index: 10;
+  flex-shrink: 0;
+}
+.home-stat {
+  flex: 1; background: white; border-radius: 14px;
+  padding: 12px 10px; text-align: center;
+  box-shadow: 0 4px 16px rgba(44,26,14,0.12);
+}
+.home-stat-val { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--bark); }
+.home-stat-label { font-size: 10px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+/* Today's card */
+.today-card {
+  margin: 16px; background: white; border-radius: 18px;
+  box-shadow: var(--card-s); overflow: hidden;
+}
+.today-header {
+  background: linear-gradient(90deg, var(--saffron), #f0892a);
+  padding: 14px 16px; display: flex; justify-content: space-between; align-items: center;
+}
+.today-header h3 { color: white; font-size: 14px; font-weight: 800; }
+.today-date { color: rgba(255,255,255,0.75); font-size: 12px; }
+.today-event {
+  padding: 14px 16px; display: flex; gap: 14px;
+  align-items: center; border-bottom: 1px solid var(--blush);
+}
+.today-event:last-child { border-bottom: none; }
+.today-time { min-width: 42px; text-align: center; }
+.today-time .t-hour { font-size: 14px; font-weight: 800; color: var(--saffron); }
+.today-time .t-ampm { font-size: 9px; color: var(--muted); font-weight: 700; }
+.today-dot-line { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.today-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--saffron); flex-shrink: 0; }
+.today-line { width: 2px; flex: 1; background: var(--blush2); min-height: 30px; }
+.today-info { flex: 1; }
+.today-name { font-size: 14px; font-weight: 700; color: var(--bark); }
+.today-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.today-cta { flex-shrink: 0; }
+
+/* Circle card */
+.my-circle-card {
+  margin: 0 16px 16px; background: white; border-radius: 18px;
+  box-shadow: var(--card-s); padding: 16px; cursor: pointer;
+  transition: all 0.2s;
+}
+.my-circle-card:active { transform: scale(0.98); }
+.mc-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.mc-circle-name { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--bark); }
+.mc-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.mc-members { display: flex; margin-top: 12px; align-items: center; }
+.mc-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blush); border: 2.5px solid white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; margin-left: -8px; box-shadow: 0 2px 6px rgba(44,26,14,0.1);
+}
+.mc-avatar:first-child { margin-left: 0; }
+.mc-count { font-size: 12px; color: var(--muted); margin-left: 10px; font-weight: 600; }
+.mc-attend-bar { margin-top: 12px; }
+.mc-attend-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+.mc-attend-val { font-weight: 700; color: var(--green); }
+
+/* Section headers */
+.sec-head { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; margin-bottom: 10px; }
+.sec-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--bark); }
+.sec-link { font-size: 13px; color: var(--saffron); font-weight: 700; cursor: pointer; }
+
+/* Quick actions */
+.quick-actions {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 10px; padding: 0 16px; margin-bottom: 20px;
+}
+.qa-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.qa-icon {
+  width: 52px; height: 52px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; transition: all 0.15s;
+}
+.qa-item:active .qa-icon { transform: scale(0.9); }
+.qa-label { font-size: 10px; font-weight: 700; color: var(--muted); text-align: center; }
+.qa-orange { background: rgba(232,101,26,0.12); }
+.qa-green  { background: rgba(30,122,74,0.12);  }
+.qa-gold   { background: rgba(201,162,39,0.15); }
+.qa-blue   { background: rgba(26,82,118,0.12);  }
+.qa-red    { background: rgba(192,57,43,0.10);  }
+.qa-teal   { background: rgba(26,122,110,0.12); }
+
+/* ══════════════════════════════════════
+   SCREEN 5 — MY CIRCLE (Detail)
+══════════════════════════════════════ */
+.circle-hero {
+  background: linear-gradient(150deg, #1E4D2B, #27AE60);
+  padding: 70px 20px 32px; position: relative; overflow: hidden; flex-shrink: 0;
+}
+.circle-hero::after {
+  content: '🌅'; position: absolute; right: 10px; bottom: -10px;
+  font-size: 100px; opacity: 0.15;
+}
+.circle-hero h1 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: white; }
+.circle-hero p  { color: rgba(255,255,255,0.65); font-size: 13px; margin-top: 4px; }
+.circle-hero-chips { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.ch-chip { background: rgba(255,255,255,0.15); color: white; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; }
+
+.circle-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 20px; }
+
+.circle-attend-card {
+  background: white; border-radius: 18px; padding: 16px;
+  box-shadow: var(--card-s);
+}
+.cat-top { display: flex; gap: 12px; align-items: center; }
+.cat-ring {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: conic-gradient(var(--green) 0% 94%, var(--blush2) 94% 100%);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative;
+}
+.cat-ring-inner {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: white; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.cat-ring-val { font-size: 17px; font-weight: 800; color: var(--green); line-height: 1; }
+.cat-ring-label { font-size: 9px; color: var(--muted); font-weight: 700; }
+.cat-right h3 { font-size: 15px; font-weight: 700; color: var(--bark); }
+.cat-right p  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.cat-streak { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.streak-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--blush2); display: flex; align-items: center;
+  justify-content: center; font-size: 12px; transition: all 0.3s;
+}
+.streak-dot.present { background: var(--green); color: white; font-size: 10px; }
+.streak-dot.today   { background: var(--saffron); color: white; font-size: 10px; ring: 2px solid white; }
+
+.member-list { display: flex; flex-direction: column; gap: 10px; }
+.ml-item {
+  display: flex; align-items: center; gap: 12px;
+  background: white; border-radius: 14px; padding: 12px;
+  box-shadow: 0 2px 8px rgba(44,26,14,0.06);
+}
+.ml-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--blush); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.ml-name { font-size: 14px; font-weight: 700; color: var(--bark); }
+.ml-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.ml-status { margin-left: auto; }
+
+/* ══════════════════════════════════════
+   SCREEN 6 — SKILL MARKETPLACE
+══════════════════════════════════════ */
+.skills-hero {
+  background: linear-gradient(150deg, #2C1A0E, #6b3d20);
+  padding: 70px 20px 24px; flex-shrink: 0;
+}
+.skills-hero h1 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: white; }
+.skills-hero p  { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 4px; }
+
+.skills-filter {
+  display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px 0;
+  flex-shrink: 0; -webkit-overflow-scrolling: touch;
+}
+.skills-filter::-webkit-scrollbar { display: none; }
+.sf-chip {
+  padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  border: 2px solid transparent; background: var(--blush); color: var(--muted);
+  white-space: nowrap; cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+}
+.sf-chip.active { background: var(--saffron); color: white; }
+.sf-chip:active { transform: scale(0.95); }
+
+.skills-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; }
+
+.skill-card-h {
+  background: white; border-radius: 18px; box-shadow: var(--card-s);
+  overflow: hidden; cursor: pointer; transition: all 0.2s;
+}
+.skill-card-h:active { transform: scale(0.98); }
+.skill-card-inner { display: flex; align-items: stretch; }
+.skill-img-sq {
+  width: 90px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 44px;
+}
+.skill-info { flex: 1; padding: 14px 14px 14px 8px; }
+.skill-title { font-size: 15px; font-weight: 800; color: var(--bark); }
+.skill-teacher-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.teacher-mini-av {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--blush); display: flex; align-items: center;
+  justify-content: center; font-size: 10px;
+}
+.skill-teacher-name { font-size: 12px; color: var(--muted); font-weight: 600; }
+.skill-rating { display: flex; align-items: center; gap: 3px; font-size: 12px; color: var(--gold); font-weight: 700; }
+.skill-meta-row { display: flex; gap: 8px; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+.skill-footer { padding: 10px 14px; background: var(--blush); display: flex; justify-content: space-between; align-items: center; }
+.skill-price { font-size: 16px; font-weight: 800; color: var(--saffron); }
+.skill-price span { font-size: 11px; font-weight: 600; color: var(--muted); }
+
+/* ══════════════════════════════════════
+   SCREEN 7 — SKILL DETAIL
+══════════════════════════════════════ */
+.skill-detail-hero {
+  height: 200px; display: flex; align-items: center; justify-content: center;
+  font-size: 80px; position: relative; overflow: hidden; flex-shrink: 0;
+}
+.skill-detail-body { padding: 20px; padding-bottom: 100px; }
+.teacher-profile-card {
+  background: var(--blush); border-radius: 16px; padding: 16px;
+  display: flex; gap: 14px; align-items: center; margin-bottom: 16px;
+}
+.tp-avatar { width: 56px; height: 56px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(44,26,14,0.12); }
+.tp-name { font-size: 16px; font-weight: 800; color: var(--bark); }
+.tp-age  { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.tp-verified { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--green); font-weight: 700; margin-top: 4px; }
+.info-block { margin-bottom: 16px; }
+.ib-title { font-size: 13px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.ib-text  { font-size: 14px; color: var(--bark); line-height: 1.7; }
+.schedule-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.slot {
+  background: var(--blush); border-radius: 12px; padding: 12px;
+  text-align: center; cursor: pointer; border: 2px solid transparent;
+  transition: all 0.2s;
+}
+.slot.selected { border-color: var(--saffron); background: rgba(232,101,26,0.08); }
+.slot:active { transform: scale(0.96); }
+.slot-day { font-size: 12px; font-weight: 700; color: var(--muted); }
+.slot-time { font-size: 14px; font-weight: 800; color: var(--bark); margin-top: 2px; }
+.skill-detail-footer {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 14px 20px 24px;
+  background: linear-gradient(transparent, white 30%);
+}
+.sdf-row { display: flex; gap: 10px; align-items: center; }
+.sdf-price { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--bark); }
+.sdf-price-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ══════════════════════════════════════
+   SCREEN 8 — JOURNEYS
+══════════════════════════════════════ */
+.journeys-hero {
+  background: linear-gradient(150deg, #0d3b6e, #1a5276);
+  padding: 70px 20px 28px; flex-shrink: 0; position: relative; overflow: hidden;
+}
+.journeys-hero::after { content: '✈️'; position: absolute; right: 16px; top: 24px; font-size: 60px; opacity: 0.2; }
+.journeys-hero h1 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: white; }
+.journeys-hero p  { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 4px; }
+
+.journey-types { display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; flex-shrink: 0; }
+.journey-types::-webkit-scrollbar { display: none; }
+.jt-chip { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 20px; background: white; box-shadow: var(--card-s); font-size: 12px; font-weight: 700; color: var(--bark); white-space: nowrap; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; flex-shrink: 0; }
+.jt-chip.active { border-color: var(--blue2); color: var(--blue2); }
+.jt-chip:active { transform: scale(0.95); }
+
+.journeys-body { padding: 0 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.journey-card-v {
+  background: white; border-radius: 20px; box-shadow: var(--card-s);
+  overflow: hidden; cursor: pointer; transition: all 0.2s;
+}
+.journey-card-v:active { transform: scale(0.98); }
+.jcv-hero {
+  height: 150px; display: flex; align-items: center; justify-content: center;
+  font-size: 60px; position: relative;
+}
+.jcv-price {
+  position: absolute; bottom: 10px; right: 12px;
+  background: rgba(44,26,14,0.85); color: white;
+  border-radius: 10px; padding: 4px 10px; font-size: 13px; font-weight: 800;
+  backdrop-filter: blur(4px);
+}
+.jcv-seats {
+  position: absolute; top: 10px; left: 12px;
+}
+.jcv-body { padding: 14px 16px; }
+.jcv-title { font-size: 16px; font-weight: 800; color: var(--bark); }
+.jcv-dates { font-size: 12px; color: var(--muted); margin-top: 4px; display: flex; align-items: center; gap: 5px; }
+.jcv-features { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.jcv-progress { margin-top: 12px; }
+.jcv-prog-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+.jcv-footer { padding: 12px 16px; background: var(--blush); display: flex; justify-content: space-between; align-items: center; }
+.jcv-incl { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+/* ══════════════════════════════════════
+   SCREEN 9 — SOS / EMERGENCY
+══════════════════════════════════════ */
+#s-sos {
+  background: linear-gradient(160deg, #7B0E0E, #C0392B 50%, #E74C3C);
+}
+.sos-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+.sos-big-btn {
+  width: 180px; height: 180px; border-radius: 50%;
+  background: white; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 20px rgba(255,255,255,0.1), 0 0 0 40px rgba(255,255,255,0.05);
+  transition: all 0.15s; animation: pulse 2s infinite;
+}
+.sos-big-btn:active { transform: scale(0.9); animation: none; }
+.sos-icon { font-size: 60px; }
+.sos-text { font-size: 14px; font-weight: 800; color: var(--red); margin-top: 4px; }
+.sos-title { font-family: 'Lora', serif; font-size: 26px; font-weight: 700; color: white; margin-top: 28px; }
+.sos-subtitle { font-size: 14px; color: rgba(255,255,255,0.65); margin-top: 8px; line-height: 1.6; }
+
+.sos-contacts { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.sos-contact {
+  background: rgba(255,255,255,0.12); border-radius: 14px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.15); transition: all 0.2s;
+}
+.sos-contact:active { background: rgba(255,255,255,0.2); transform: scale(0.98); }
+.sos-contact-av { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.sos-contact-name { font-size: 14px; font-weight: 700; color: white; }
+.sos-contact-role { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.sos-call-icon { margin-left: auto; font-size: 22px; animation: bounce 1s infinite; }
+
+/* ══════════════════════════════════════
+   SCREEN 10 — PALLIATIVE / COMPANION
+══════════════════════════════════════ */
+.companion-hero {
+  background: linear-gradient(150deg, #4a1a4a, #7b2d7b);
+  padding: 70px 20px 28px; flex-shrink: 0; position: relative;
+}
+.companion-hero::after { content: '💛'; position: absolute; right: 20px; top: 32px; font-size: 60px; opacity: 0.25; }
+.companion-hero h1 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: white; }
+.companion-hero p  { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 4px; line-height: 1.6; }
+
+.companion-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; }
+
+.companion-card {
+  background: white; border-radius: 18px; box-shadow: var(--card-s); overflow: hidden;
+}
+.cc-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.cc-av { width: 48px; height: 48px; border-radius: 50%; background: var(--blush); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.cc-name { font-size: 15px; font-weight: 700; color: var(--bark); }
+.cc-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.cc-body { padding: 0 16px 14px; }
+.cc-body p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.cc-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+.mood-check { background: white; border-radius: 18px; box-shadow: var(--card-s); padding: 16px; }
+.mood-title { font-size: 15px; font-weight: 700; color: var(--bark); margin-bottom: 14px; }
+.mood-emojis { display: flex; gap: 8px; justify-content: space-between; }
+.mood-btn { flex: 1; background: var(--blush); border-radius: 12px; padding: 12px 8px; border: none; cursor: pointer; text-align: center; transition: all 0.2s; border: 2px solid transparent; }
+.mood-btn:active { transform: scale(0.92); }
+.mood-btn.selected { border-color: var(--saffron); background: rgba(232,101,26,0.08); }
+.mood-emoji { font-size: 24px; display: block; }
+.mood-label { font-size: 10px; color: var(--muted); font-weight: 700; margin-top: 4px; display: block; }
+
+/* ══════════════════════════════════════
+   SCREEN 11 — MY PROFILE
+══════════════════════════════════════ */
+.profile-hero {
+  background: linear-gradient(150deg, #2C1A0E, #5a3520);
+  padding: 70px 20px 100px; text-align: center; position: relative; overflow: hidden; flex-shrink: 0;
+}
+.profile-hero::after { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: rgba(232,101,26,0.1); right: -60px; top: -60px; }
+.profile-avatar-ring {
+  width: 90px; height: 90px; border-radius: 50%;
+  background: var(--saffron); margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42px; box-shadow: 0 0 0 4px rgba(232,101,26,0.3), 0 8px 24px rgba(232,101,26,0.3);
+}
+.profile-name { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: white; margin-top: 12px; }
+.profile-plan { font-size: 13px; margin-top: 6px; }
+.profile-stats-row {
+  display: flex; gap: 1px;
+  margin: -40px 16px 0; background: var(--blush2); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(44,26,14,0.12); position: relative; z-index: 10;
+}
+.ps-item { flex: 1; background: white; padding: 14px 8px; text-align: center; }
+.ps-val { font-family: 'Lora', serif; font-size: 20px; font-weight: 700; color: var(--bark); }
+.ps-label { font-size: 10px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+.profile-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; padding-bottom: 20px; }
+.profile-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); padding: 14px 4px 6px; }
+.profile-row {
+  background: white; border-radius: 0; padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px; cursor: pointer;
+  transition: all 0.15s; border-bottom: 1px solid var(--blush);
+}
+.profile-row:first-of-type { border-radius: 14px 14px 0 0; }
+.profile-row:last-of-type  { border-radius: 0 0 14px 14px; border-bottom: none; }
+.profile-row:only-of-type  { border-radius: 14px; border-bottom: none; }
+.profile-row:active { background: var(--blush); }
+.pr-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--blush); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.pr-label { font-size: 14px; font-weight: 600; color: var(--bark); flex: 1; }
+.pr-value { font-size: 13px; color: var(--muted); }
+.pr-arrow { color: var(--muted2); font-size: 14px; }
+
+/* ══════════════════════════════════════
+   SCREEN 12 — NRI REPORT VIEW
+══════════════════════════════════════ */
+.nri-report-hero {
+  background: linear-gradient(150deg, #0b3d5c, #1a6b8a);
+  padding: 70px 20px 28px; flex-shrink: 0;
+}
+.nri-report-hero h1 { font-family: 'Lora', serif; font-size: 20px; font-weight: 700; color: white; }
+.nri-report-hero p  { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 4px; }
+
+.report-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; }
+.report-day-card {
+  background: white; border-radius: 18px; box-shadow: var(--card-s); overflow: hidden;
+}
+.rdc-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--blush); }
+.rdc-date { font-size: 13px; font-weight: 800; color: var(--bark); }
+.rdc-items { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.rdc-item { display: flex; gap: 12px; align-items: flex-start; }
+.rdc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-top: 5px; flex-shrink: 0; }
+.rdc-dot.orange { background: var(--saffron); }
+.rdc-dot.blue   { background: var(--blue2); }
+.rdc-text { font-size: 13px; color: var(--bark); line-height: 1.5; }
+.rdc-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ══════════════════════════════════════
+   SCREEN 13 — NOTIFICATIONS
+══════════════════════════════════════ */
+.notif-body { padding: 8px 16px; display: flex; flex-direction: column; gap: 4px; padding-bottom: 20px; }
+.notif-item {
+  background: white; border-radius: 14px; padding: 14px 16px;
+  display: flex; gap: 14px; align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(44,26,14,0.06); cursor: pointer; transition: all 0.15s;
+}
+.notif-item.unread { background: rgba(232,101,26,0.04); border-left: 3px solid var(--saffron); border-radius: 0 14px 14px 0; }
+.notif-item:active { transform: scale(0.98); }
+.ni-icon { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.ni-content { flex: 1; }
+.ni-title { font-size: 13px; font-weight: 700; color: var(--bark); line-height: 1.4; }
+.ni-body  { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.ni-time  { font-size: 11px; color: var(--muted2); margin-top: 4px; }
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+#app-toast {
+  position: absolute; bottom: 90px; left: 16px; right: 16px; z-index: 900;
+  background: var(--bark); color: white; padding: 14px 18px;
+  border-radius: 16px; font-size: 14px; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  display: none; text-align: center;
+  animation: fadeUp 0.3s ease;
+}
+
+/* ══════════════════════════════════════
+   MODAL SHEET
+══════════════════════════════════════ */
+.sheet-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 200; display: none; align-items: flex-end;
+  backdrop-filter: blur(3px);
+}
+.sheet-overlay.open { display: flex; }
+.sheet {
+  background: white; border-radius: 28px 28px 0 0;
+  width: 100%; max-height: 85%;
+  overflow-y: auto; padding: 8px 0 32px;
+  animation: slideSheetUp 0.3s ease;
+}
+.sheet::-webkit-scrollbar { display: none; }
+@keyframes slideSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.sheet-handle { width: 40px; height: 4px; border-radius: 2px; background: var(--blush2); margin: 12px auto 16px; }
+.sheet-title { font-family: 'Lora', serif; font-size: 20px; font-weight: 700; color: var(--bark); padding: 0 20px 16px; }
+
+/* ══════════════════════════════════════
+   MISC UTILITIES
+══════════════════════════════════════ */
+.divider { height: 1px; background: var(--blush); margin: 4px 0; }
+.pad-h  { padding-left: 16px; padding-right: 16px; }
+.mt-8   { margin-top: 8px; }
+.mt-12  { margin-top: 12px; }
+.mt-16  { margin-top: 16px; }
+.mt-20  { margin-top: 20px; }
+.mb-16  { margin-bottom: 16px; }
+.pb-100 { padding-bottom: 100px; }
+
+/* Meet join button full width */
+.meet-join-btn {
+  background: #1a73e8; color: white; border: none;
+  border-radius: 14px; padding: 14px 20px;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
+  width: 100%; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 10px; transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(26,115,232,0.35);
+}
+.meet-join-btn:active { transform: scale(0.97); }
+
+/* Attendance calendar */
+.attend-cal { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; }
+.ac-day { aspect-ratio: 1; border-radius: 8px; background: var(--blush2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--muted); }
+.ac-day.present { background: var(--green); color: white; }
+.ac-day.absent  { background: rgba(192,57,43,0.12); color: var(--red); }
+.ac-day.today   { background: var(--saffron); color: white; }
+.ac-day.future  { background: transparent; color: var(--muted2); }
+
+/* Gift card */
+.gift-banner {
+  background: linear-gradient(135deg, #2C1A0E, #6b3d20);
+  border-radius: 18px; padding: 18px; margin: 0 16px;
+  display: flex; gap: 14px; align-items: center; cursor: pointer;
+  transition: all 0.2s;
+}
+.gift-banner:active { transform: scale(0.98); }
+.gift-banner-text h3 { font-family: 'Lora', serif; font-size: 16px; font-weight: 700; color: white; }
+.gift-banner-text p  { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="phone-shell">
+  <div class="dynamic-island"></div>
+  
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-time">9:41</div>
+    <div class="status-icons">
+      <span>●●●</span><span>WiFi</span><span>⚡</span>
+    </div>
+  </div>
+
+  <!-- Screen Container -->
+  <div class="screen-wrap">
+
+    <!-- ══════ SPLASH ══════ -->
+    <div class="screen active" id="s-splash" style="flex-direction:column">
+      <div class="splash-circles">
+        <div class="splash-circle" style="width:300px;height:300px;top:-100px;right:-100px"></div>
+        <div class="splash-circle" style="width:200px;height:200px;bottom:100px;left:-80px;background:rgba(201,162,39,0.06)"></div>
+      </div>
+      <div class="splash-logo-wrap">
+        <div class="splash-tamil">யுகம்</div>
+        <div class="splash-eng">Y U G A M</div>
+        <div class="splash-tagline">India's Neighbourhood Care Network<br>for People 60+</div>
+        <div class="splash-pillars">
+          <div class="splash-pillar"><div class="sp-icon">⭕</div><div class="sp-label">Circles</div></div>
+          <div class="splash-pillar"><div class="sp-icon">💛</div><div class="sp-label">Care</div></div>
+          <div class="splash-pillar"><div class="sp-icon">🎓</div><div class="sp-label">Skills</div></div>
+          <div class="splash-pillar"><div class="sp-icon">✈️</div><div class="sp-label">Journeys</div></div>
+        </div>
+      </div>
+      <div class="splash-bottom">
+        <button class="splash-btn-main" onclick="goTo('s-onboard')">Get Started →</button>
+        <button class="splash-btn-sec" onclick="goTo('s-home')">I Already Have an Account</button>
+        <div class="splash-free">Free 60-day trial · No credit card needed</div>
+      </div>
+    </div>
+
+    <!-- ══════ ONBOARDING ══════ -->
+    <div class="screen" id="s-onboard" style="position:relative">
+      <div class="onboard-hero" id="ob-hero" style="background:linear-gradient(150deg,#2C1A0E,#6b3d20)">
+        <div class="onboard-emoji" id="ob-emoji">🌅</div>
+        <div>
+          <div class="onboard-step-badge" id="ob-badge">Step 1 of 4</div>
+          <h2 id="ob-title">Join your neighbourhood circle</h2>
+        </div>
+      </div>
+      <div class="onboard-body" id="ob-body">
+        <div class="ob-step anim-fade anim-d1">
+          <div class="ob-step-num">1</div>
+          <div class="ob-step-text">
+            <h4>Tell us where you live</h4>
+            <p>We find 8–12 elders within 500 metres of you to form your personal circle.</p>
+          </div>
+        </div>
+        <div class="ob-step anim-fade anim-d2">
+          <div class="ob-step-num">2</div>
+          <div class="ob-step-text">
+            <h4>Choose your activities</h4>
+            <p>Morning walk, yoga, bhajan, music — 3 times a week with people who become family.</p>
+          </div>
+        </div>
+        <div class="ob-step anim-fade anim-d3">
+          <div class="ob-step-num">3</div>
+          <div class="ob-step-text">
+            <h4>Meet your Circle Coordinator</h4>
+            <p>A trained, paid local coordinator facilitates every session. They call you by name.</p>
+          </div>
+        </div>
+        <div class="ob-dots-wrap" style="display:flex;justify-content:center;gap:8px;margin-top:8px">
+          <div class="ob-dot active"></div>
+          <div class="ob-dot"></div>
+          <div class="ob-dot"></div>
+          <div class="ob-dot"></div>
+        </div>
+      </div>
+      <div class="onboard-footer">
+        <button class="btn-main" onclick="goTo('s-lang')">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════ LANGUAGE ══════ -->
+    <div class="screen" id="s-lang">
+      <div class="screen-header">
+        <button class="header-back" onclick="goBack()">←</button>
+        <div class="header-title">Choose Language</div>
+        <div style="width:36px"></div>
+      </div>
+      <div style="padding:8px 20px 16px;font-size:14px;color:var(--muted)">
+        We'll show everything in your language
+      </div>
+      <div class="lang-grid">
+        <div class="lang-card selected" onclick="selectLang(this)">
+          <div class="lang-script">த</div>
+          <div class="lang-name">Tamil</div>
+          <div class="lang-native">தமிழ்</div>
+        </div>
+        <div class="lang-card" onclick="selectLang(this)">
+          <div class="lang-script">A</div>
+          <div class="lang-name">English</div>
+          <div class="lang-native">English</div>
+        </div>
+        <div class="lang-card" onclick="selectLang(this)">
+          <div class="lang-script">ക</div>
+          <div class="lang-name">Malayalam</div>
+          <div class="lang-native">മലയാളം</div>
+        </div>
+        <div class="lang-card" onclick="selectLang(this)">
+          <div class="lang-script">ت</div>
+          <div class="lang-name">Urdu</div>
+          <div class="lang-native">اردو</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px;font-size:13px;color:var(--muted);text-align:center">
+        You can change this anytime in Settings
+      </div>
+      <div style="padding:0 20px 32px">
+        <button class="btn-main" onclick="goTo('s-home')">Continue with Tamil →</button>
+      </div>
+    </div>
+
+    <!-- ══════ HOME ══════ -->
+    <div class="screen" id="s-home">
+      <!-- Header -->
+      <div class="home-header" style="flex-shrink:0">
+        <div class="home-top-row">
+          <div>
+            <div class="home-greeting">Good morning 🙏</div>
+            <div class="home-name">Saroja <span>Paati</span></div>
+            <div class="home-subtitle">📍 Marina Beach Circle · Thoothukudi</div>
+          </div>
+          <button class="header-action" style="background:rgba(255,255,255,0.15);border:none" onclick="goTo('s-notif')">
+            🔔
+            <div class="notif-dot-abs"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="home-stats-row anim-fade">
+        <div class="home-stat">
+          <div class="home-stat-val">94%</div>
+          <div class="home-stat-label">Attendance</div>
+        </div>
+        <div class="home-stat">
+          <div class="home-stat-val">12</div>
+          <div class="home-stat-label">Circle Friends</div>
+        </div>
+        <div class="home-stat">
+          <div class="home-stat-val">18</div>
+          <div class="home-stat-label">Day Streak 🔥</div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div style="flex:1;overflow-y:auto;padding-bottom:20px">
+
+        <!-- Today -->
+        <div style="padding:16px 16px 8px" class="anim-fade anim-d1">
+          <div class="today-card">
+            <div class="today-header">
+              <h3>Today's Schedule</h3>
+              <div class="today-date">Wed, 11 Mar</div>
+            </div>
+            <div class="today-event">
+              <div class="today-time"><div class="t-hour">6:00</div><div class="t-ampm">AM</div></div>
+              <div class="today-dot-line"><div class="today-dot" style="background:var(--green)"></div><div class="today-line"></div></div>
+              <div class="today-info">
+                <div class="today-name">🚶 Morning Walk</div>
+                <div class="today-meta">Marina Beach · 12 members</div>
+              </div>
+              <div class="today-cta"><span class="badge b-green">Done ✓</span></div>
+            </div>
+            <div class="today-event">
+              <div class="today-time"><div class="t-hour">10:00</div><div class="t-ampm">AM</div></div>
+              <div class="today-dot-line"><div class="today-dot"></div><div class="today-line"></div></div>
+              <div class="today-info">
+                <div class="today-name">🍲 Cooking Class</div>
+                <div class="today-meta">Your skill session · 4 students</div>
+              </div>
+              <div class="today-cta"><button class="btn-small btn-s-blue" onclick="openMeetSheet()">🎥 Join</button></div>
+            </div>
+            <div class="today-event" style="border-bottom:none">
+              <div class="today-time"><div class="t-hour">5:00</div><div class="t-ampm">PM</div></div>
+              <div class="today-dot-line"><div class="today-dot" style="background:var(--blush2)"></div></div>
+              <div class="today-info">
+                <div class="today-name">🧘 Chair Yoga</div>
+                <div class="today-meta">Community Hall · Circle 1</div>
+              </div>
+              <div class="today-cta"><span class="badge b-muted">5 PM</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="anim-fade anim-d2">
+          <div class="sec-head mt-8">
+            <div class="sec-title">Quick Actions</div>
+          </div>
+          <div class="quick-actions">
+            <div class="qa-item" onclick="goTo('s-circle')">
+              <div class="qa-icon qa-green">⭕</div>
+              <div class="qa-label">My Circle</div>
+            </div>
+            <div class="qa-item" onclick="goTo('s-skills')">
+              <div class="qa-icon qa-orange">🎓</div>
+              <div class="qa-label">Skills</div>
+            </div>
+            <div class="qa-item" onclick="goTo('s-journeys')">
+              <div class="qa-icon qa-blue">✈️</div>
+              <div class="qa-label">Journeys</div>
+            </div>
+            <div class="qa-item" onclick="goTo('s-sos')">
+              <div class="qa-icon qa-red">🆘</div>
+              <div class="qa-label">SOS Help</div>
+            </div>
+            <div class="qa-item" onclick="goTo('s-companion')">
+              <div class="qa-icon" style="background:rgba(123,45,123,0.12)">💛</div>
+              <div class="qa-label">Companion</div>
+            </div>
+            <div class="qa-item" onclick="goTo('s-nri')">
+              <div class="qa-icon qa-blue">🌏</div>
+              <div class="qa-label">Family View</div>
+            </div>
+            <div class="qa-item" onclick="openMeetSheet()">
+              <div class="qa-icon" style="background:rgba(26,115,232,0.12)">🎥</div>
+              <div class="qa-label">Join Meet</div>
+            </div>
+            <div class="qa-item" onclick="goTo('s-profile')">
+              <div class="qa-icon qa-gold">👤</div>
+              <div class="qa-label">Profile</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Circle snippet -->
+        <div class="anim-fade anim-d3">
+          <div class="sec-head">
+            <div class="sec-title">My Circle</div>
+            <div class="sec-link" onclick="goTo('s-circle')">See all →</div>
+          </div>
+          <div class="my-circle-card" onclick="goTo('s-circle')">
+            <div class="mc-top">
+              <div>
+                <div class="mc-circle-name">🌅 Marina Beach Walk</div>
+                <div class="mc-meta">📍 Mon·Wed·Fri · 6:00 AM · Coordinator: Priya</div>
+              </div>
+              <span class="badge b-green">● Active</span>
+            </div>
+            <div class="mc-members">
+              <div class="mc-avatar">👵</div>
+              <div class="mc-avatar">👴</div>
+              <div class="mc-avatar">👵</div>
+              <div class="mc-avatar">👴</div>
+              <div class="mc-avatar" style="background:var(--saffron);color:white;font-size:12px;font-weight:800">+8</div>
+              <div class="mc-count">12 members this circle</div>
+            </div>
+            <div class="mc-attend-bar">
+              <div class="mc-attend-label">
+                <span>This month's attendance</span>
+                <span class="mc-attend-val">94% ★</span>
+              </div>
+              <div class="prog-track" style="height:7px"><div class="prog-fill" style="width:94%;background:var(--green)"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming skill sessions -->
+        <div class="anim-fade anim-d4">
+          <div class="sec-head mt-4">
+            <div class="sec-title">Upcoming Sessions</div>
+            <div class="sec-link" onclick="goTo('s-skills')">Browse →</div>
+          </div>
+          <div style="padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+            <div class="card" style="padding:14px;display:flex;gap:12px;align-items:center;cursor:pointer" onclick="goTo('s-skill-detail')">
+              <div style="width:50px;height:50px;background:rgba(232,101,26,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🍲</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:800;color:var(--bark)">Your Cooking Class</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px">Today 10:00 AM · 4 students joining</div>
+              </div>
+              <button class="btn-small btn-s-blue" onclick="event.stopPropagation();openMeetSheet()">🎥</button>
+            </div>
+            <div class="card" style="padding:14px;display:flex;gap:12px;align-items:center;cursor:pointer" onclick="goTo('s-skill-detail')">
+              <div style="width:50px;height:50px;background:rgba(26,82,118,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">♟️</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:800;color:var(--bark)">Chess Strategy</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px">Thu 13 Mar · 4:00 PM · Krishnamurthy</div>
+              </div>
+              <span class="badge b-muted">Thu</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Journey banner -->
+        <div class="anim-fade anim-d5">
+          <div class="sec-head">
+            <div class="sec-title">Next Journey</div>
+            <div class="sec-link" onclick="goTo('s-journeys')">All →</div>
+          </div>
+          <div class="gift-banner mt-0" style="margin:0 16px 20px" onclick="goTo('s-journeys')">
+            <div style="font-size:48px">🕌</div>
+            <div class="gift-banner-text">
+              <h3>Char Dham Yatra</h3>
+              <p>April 15–28 · 14 days · Only 4 seats left!</p>
+              <div class="badge b-orange" style="margin-top:8px;background:rgba(232,101,26,0.2)">24/28 booked 🔥</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /scroll body -->
+    </div><!-- /home -->
+
+    <!-- ══════ CIRCLE DETAIL ══════ -->
+    <div class="screen" id="s-circle">
+      <div class="circle-hero">
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent">
+          <button class="header-back" style="background:rgba(255,255,255,0.2)" onclick="goBack()">←</button>
+          <div class="header-title" style="color:white">My Circle</div>
+          <button class="header-action" style="background:rgba(255,255,255,0.2)" onclick="showToast('📞 Calling coordinator Priya…')">📞</button>
+        </div>
+        <div>
+          <h1>🌅 Marina Beach Morning Walk</h1>
+          <p>📍 Marina Beach Front, Thoothukudi</p>
+          <div class="circle-hero-chips">
+            <div class="ch-chip">Mon·Wed·Fri</div>
+            <div class="ch-chip">6:00 AM</div>
+            <div class="ch-chip">12 Members</div>
+            <div class="ch-chip">Coordinator: Priya</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="circle-body">
+        <!-- Attendance Ring -->
+        <div class="circle-attend-card anim-fade">
+          <div style="font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">Your Attendance</div>
+          <div class="cat-top">
+            <div class="cat-ring">
+              <div class="cat-ring-inner">
+                <div class="cat-ring-val">94%</div>
+                <div class="cat-ring-label">This month</div>
+              </div>
+            </div>
+            <div class="cat-right">
+              <h3>Excellent Attendance! ⭐</h3>
+              <p>You've attended 15 of 16 sessions this month. Keep the streak going!</p>
+              <div class="cat-streak mt-8">
+                <div class="streak-dot present">✓</div>
+                <div class="streak-dot present">✓</div>
+                <div class="streak-dot present">✓</div>
+                <div class="streak-dot" style="background:var(--red);color:white;font-size:10px">✗</div>
+                <div class="streak-dot present">✓</div>
+                <div class="streak-dot present">✓</div>
+                <div class="streak-dot today">●</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- This week's sessions -->
+        <div class="card anim-fade anim-d1">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--blush);display:flex;justify-content:space-between">
+            <span style="font-size:14px;font-weight:800;color:var(--bark)">This Week</span>
+            <span class="badge b-green">3 sessions</span>
+          </div>
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="font-size:22px">🚶</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:700;color:var(--bark)">Morning Walk</div>
+                <div style="font-size:12px;color:var(--muted)">Mon Mar 9 · 6:00 AM · 11/12 attended</div>
+              </div>
+              <span class="badge b-green">Done ✓</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="font-size:22px">🚶</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:700;color:var(--bark)">Morning Walk</div>
+                <div style="font-size:12px;color:var(--muted)">Wed Mar 11 · 6:00 AM · Today</div>
+              </div>
+              <span class="badge b-green">Done ✓</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="font-size:22px">🚶</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:700;color:var(--bark)">Morning Walk</div>
+                <div style="font-size:12px;color:var(--muted)">Fri Mar 13 · 6:00 AM</div>
+              </div>
+              <span class="badge b-muted">Fri</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Calendar -->
+        <div class="card anim-fade anim-d2" style="padding:16px">
+          <div style="font-size:14px;font-weight:800;color:var(--bark);margin-bottom:12px">March 2026 — Attendance</div>
+          <div class="attend-cal">
+            <div class="ac-day future">Su</div><div class="ac-day future">Mo</div><div class="ac-day future">Tu</div><div class="ac-day future">We</div><div class="ac-day future">Th</div><div class="ac-day future">Fr</div><div class="ac-day future">Sa</div>
+            <div class="ac-day future"></div><div class="ac-day present">2</div><div class="ac-day future">3</div><div class="ac-day present">4</div><div class="ac-day future">5</div><div class="ac-day present">6</div><div class="ac-day future">7</div>
+            <div class="ac-day future">8</div><div class="ac-day present">9</div><div class="ac-day future">10</div><div class="ac-day today">11</div><div class="ac-day future">12</div><div class="ac-day future">13</div><div class="ac-day future">14</div>
+            <div class="ac-day future">15</div><div class="ac-day future">16</div><div class="ac-day future">17</div><div class="ac-day future">18</div><div class="ac-day future">19</div><div class="ac-day future">20</div><div class="ac-day future">21</div>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:12px;font-size:11px;color:var(--muted)">
+            <span>🟢 Present</span><span>🔴 Absent</span><span>🟠 Today</span>
+          </div>
+        </div>
+
+        <!-- Circle Members -->
+        <div class="anim-fade anim-d3">
+          <div style="font-size:14px;font-weight:800;color:var(--bark);margin-bottom:10px">Circle Members (12)</div>
+          <div class="member-list">
+            <div class="ml-item">
+              <div class="ml-avatar">👵</div>
+              <div>
+                <div class="ml-name">Saroja Krishnamurthy <span style="font-size:11px;color:var(--saffron)">(You)</span></div>
+                <div class="ml-detail">67 yrs · 94% attendance · Teacher 🎓</div>
+              </div>
+              <div class="ml-status"><span class="badge b-orange">You</span></div>
+            </div>
+            <div class="ml-item">
+              <div class="ml-avatar">👴</div>
+              <div>
+                <div class="ml-name">Rajan Venkataraman</div>
+                <div class="ml-detail">72 yrs · 88% attendance · Violin Teacher</div>
+              </div>
+              <div class="ml-status"><span class="badge b-green">Active</span></div>
+            </div>
+            <div class="ml-item">
+              <div class="ml-avatar">👵</div>
+              <div>
+                <div class="ml-name">Kamala Sundarajan</div>
+                <div class="ml-detail">64 yrs · 92% attendance</div>
+              </div>
+              <div class="ml-status"><span class="badge b-green">Active</span></div>
+            </div>
+            <div class="ml-item">
+              <div class="ml-avatar">👴</div>
+              <div>
+                <div class="ml-name">Krishnamurthy S.</div>
+                <div class="ml-detail">70 yrs · Chess Teacher 🎓</div>
+              </div>
+              <div class="ml-status"><span class="badge b-green">Active</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coordinator card -->
+        <div class="card anim-fade anim-d4" style="padding:16px">
+          <div style="font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">Your Coordinator</div>
+          <div style="display:flex;gap:14px;align-items:center">
+            <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--saffron),#f0892a);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🤝</div>
+            <div style="flex:1">
+              <div style="font-size:16px;font-weight:800;color:var(--bark)">Priya Rajan</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px">Yugam Certified · Senior Coordinator</div>
+              <div style="font-size:12px;color:var(--green);margin-top:4px;font-weight:700">● Available now</div>
+            </div>
+            <button class="btn-small btn-s-orange" onclick="showToast('📞 Calling Priya Rajan…')">📞 Call</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ SKILLS MARKETPLACE ══════ -->
+    <div class="screen" id="s-skills">
+      <div class="skills-hero">
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent;padding-top:8px">
+          <button class="header-back" style="background:rgba(255,255,255,0.15)" onclick="goBack()">←</button>
+          <div class="header-title" style="color:white">Skill Marketplace</div>
+          <button class="header-action" style="background:rgba(255,255,255,0.15)" onclick="showToast('🔍 Search coming soon!')">🔍</button>
+        </div>
+        <h1>🎓 Learn from Elders</h1>
+        <p>Real skills, real teachers, real income.<br>Yugam earns 20% · You keep 80%.</p>
+      </div>
+      <div class="skills-filter">
+        <div class="sf-chip active" onclick="filterSkill(this)">All</div>
+        <div class="sf-chip" onclick="filterSkill(this)">🍲 Cooking</div>
+        <div class="sf-chip" onclick="filterSkill(this)">🎵 Music</div>
+        <div class="sf-chip" onclick="filterSkill(this)">🎨 Arts</div>
+        <div class="sf-chip" onclick="filterSkill(this)">♟️ Games</div>
+        <div class="sf-chip" onclick="filterSkill(this)">⭐ Astrology</div>
+        <div class="sf-chip" onclick="filterSkill(this)">🧵 Crafts</div>
+      </div>
+      <div class="skills-body">
+        <div class="skill-card-h anim-fade" onclick="goTo('s-skill-detail')">
+          <div class="skill-card-inner">
+            <div class="skill-img-sq" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">🍲</div>
+            <div class="skill-info">
+              <div class="skill-title">Traditional Tamil Cooking</div>
+              <div class="skill-teacher-row">
+                <div class="teacher-mini-av">👵</div>
+                <div class="skill-teacher-name">Saroja Paati · 67 yrs</div>
+              </div>
+              <div class="skill-meta-row">
+                <div class="skill-rating">★ 4.9</div>
+                <span class="badge b-muted">23 students</span>
+                <span class="badge b-blue">Google Meet</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-footer">
+            <div class="skill-price">₹250 <span>/ session</span></div>
+            <button class="btn-small btn-s-orange" onclick="event.stopPropagation();goTo('s-skill-detail')">Book →</button>
+          </div>
+        </div>
+
+        <div class="skill-card-h anim-fade anim-d1" onclick="goTo('s-skill-detail')">
+          <div class="skill-card-inner">
+            <div class="skill-img-sq" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">🎻</div>
+            <div class="skill-info">
+              <div class="skill-title">Carnatic Violin</div>
+              <div class="skill-teacher-row">
+                <div class="teacher-mini-av">👴</div>
+                <div class="skill-teacher-name">Rajan Thatha · 72 yrs</div>
+              </div>
+              <div class="skill-meta-row">
+                <div class="skill-rating">★ 5.0</div>
+                <span class="badge b-muted">8 students</span>
+                <span class="badge b-blue">Google Meet</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-footer">
+            <div class="skill-price">₹400 <span>/ session</span></div>
+            <button class="btn-small btn-s-orange" onclick="event.stopPropagation();goTo('s-skill-detail')">Book →</button>
+          </div>
+        </div>
+
+        <div class="skill-card-h anim-fade anim-d2" onclick="goTo('s-skill-detail')">
+          <div class="skill-card-inner">
+            <div class="skill-img-sq" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)">🎨</div>
+            <div class="skill-info">
+              <div class="skill-title">Kolam & Rangoli Art</div>
+              <div class="skill-teacher-row">
+                <div class="teacher-mini-av">👵</div>
+                <div class="skill-teacher-name">Kamala Aunty · 64 yrs</div>
+              </div>
+              <div class="skill-meta-row">
+                <div class="skill-rating">★ 4.8</div>
+                <span class="badge b-muted">31 students</span>
+                <span class="badge b-blue">Google Meet</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-footer">
+            <div class="skill-price">₹200 <span>/ session</span></div>
+            <button class="btn-small btn-s-orange" onclick="event.stopPropagation();goTo('s-skill-detail')">Book →</button>
+          </div>
+        </div>
+
+        <div class="skill-card-h anim-fade anim-d3" onclick="goTo('s-skill-detail')">
+          <div class="skill-card-inner">
+            <div class="skill-img-sq" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">⭐</div>
+            <div class="skill-info">
+              <div class="skill-title">Vedic Astrology (Jyotish)</div>
+              <div class="skill-teacher-row">
+                <div class="teacher-mini-av">👴</div>
+                <div class="skill-teacher-name">Venkat Anna · 68 yrs</div>
+              </div>
+              <div class="skill-meta-row">
+                <div class="skill-rating">★ 4.7</div>
+                <span class="badge b-muted">12 students</span>
+              </div>
+            </div>
+          </div>
+          <div class="skill-footer">
+            <div class="skill-price">₹500 <span>/ session</span></div>
+            <button class="btn-small btn-s-orange" onclick="event.stopPropagation();goTo('s-skill-detail')">Book →</button>
+          </div>
+        </div>
+
+        <!-- Teach banner -->
+        <div style="background:linear-gradient(135deg,var(--bark),#5a3520);border-radius:18px;padding:18px;cursor:pointer;transition:all 0.2s" onclick="showToast('🎓 Teacher onboarding form opened!')">
+          <div style="font-size:28px;margin-bottom:8px">🎓</div>
+          <div style="font-family:'Lora',serif;font-size:17px;font-weight:700;color:white">Do you have a skill to share?</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:4px;line-height:1.5">Teach what you know. Earn ₹200–500 per session. Your first class is free — and it's never just income. It's legacy.</div>
+          <div style="background:var(--saffron);color:white;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:800;margin-top:14px;display:inline-block">Become a Teacher →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ SKILL DETAIL ══════ -->
+    <div class="screen" id="s-skill-detail">
+      <div style="position:relative">
+        <div class="skill-detail-hero" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">🍲</div>
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent;padding-top:8px">
+          <button class="header-back" style="background:rgba(255,255,255,0.7)" onclick="goBack()">←</button>
+          <div style="width:36px"></div>
+        </div>
+      </div>
+      <div class="skill-detail-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+          <div>
+            <div style="font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--bark)">Traditional Tamil Cooking</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px">Kollu Rasam · Kuzhambu · Pittu · Appam</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:18px;color:var(--gold);font-weight:700">★ 4.9</div>
+            <div style="font-size:11px;color:var(--muted)">23 reviews</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+          <span class="badge b-orange">🍲 Cooking</span>
+          <span class="badge b-blue">📹 Google Meet</span>
+          <span class="badge b-green">🎓 23 students</span>
+        </div>
+
+        <div class="teacher-profile-card">
+          <div class="tp-avatar">👵</div>
+          <div>
+            <div class="tp-name">Saroja Krishnamurthy</div>
+            <div class="tp-age">67 years old · Thoothukudi</div>
+            <div class="tp-verified">✅ Yugam Verified Teacher</div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="ib-title">About This Class</div>
+          <div class="ib-text">Learn the authentic flavours of Tamil Nadu from someone who has cooked for 40 years. We cover traditional recipes, the story behind each dish, and the techniques passed down through generations. No recipe is complete without its history.</div>
+        </div>
+
+        <div class="info-block">
+          <div class="ib-title">What You'll Learn</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:10px;align-items:center"><span style="color:var(--green)">✓</span><span style="font-size:14px;color:var(--bark)">Kollu Rasam & Pepper Kuzhambu</span></div>
+            <div style="display:flex;gap:10px;align-items:center"><span style="color:var(--green)">✓</span><span style="font-size:14px;color:var(--bark)">Rice Pittu & Coconut Appam</span></div>
+            <div style="display:flex;gap:10px;align-items:center"><span style="color:var(--green)">✓</span><span style="font-size:14px;color:var(--bark)">Traditional grinding techniques</span></div>
+            <div style="display:flex;gap:10px;align-items:center"><span style="color:var(--green)">✓</span><span style="font-size:14px;color:var(--bark)">Seasonal ingredient selection</span></div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="ib-title">Available Slots</div>
+          <div class="schedule-slots">
+            <div class="slot selected" onclick="selectSlot(this)">
+              <div class="slot-day">Wednesday</div>
+              <div class="slot-time">10:00 AM</div>
+              <div style="font-size:11px;color:var(--saffron);margin-top:4px;font-weight:700">Today ✓</div>
+            </div>
+            <div class="slot" onclick="selectSlot(this)">
+              <div class="slot-day">Saturday</div>
+              <div class="slot-time">11:00 AM</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">3 spots left</div>
+            </div>
+            <div class="slot" onclick="selectSlot(this)">
+              <div class="slot-day">Sunday</div>
+              <div class="slot-time">4:00 PM</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">5 spots left</div>
+            </div>
+            <div class="slot" onclick="selectSlot(this)">
+              <div class="slot-day">Wednesday</div>
+              <div class="slot-time">10:00 AM</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Next week</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="ib-title">Student Reviews</div>
+          <div style="background:var(--blush);border-radius:14px;padding:14px">
+            <div style="display:flex;gap:3px;color:var(--gold);font-size:16px">★★★★★</div>
+            <div style="font-size:14px;color:var(--bark);margin-top:6px;line-height:1.6;font-style:italic">"Saroja Paati taught me the rasam my grandmother used to make. I cried making it the first time. This is not a cooking class — it's a connection to our roots."</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:8px">— Meera S., Bangalore · 2 months ago</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Fixed footer -->
+      <div class="skill-detail-footer" style="background:linear-gradient(transparent,white 35%)">
+        <div class="sdf-row">
+          <div>
+            <div class="sdf-price">₹250</div>
+            <div class="sdf-price-label">per session · 60 min</div>
+          </div>
+          <div style="display:flex;gap:8px;flex:1;margin-left:16px">
+            <button class="btn-main" style="flex:1" onclick="showToast('✅ Booked! Meet link sent on WhatsApp')">Book Now</button>
+            <button class="btn-main" style="background:#1a73e8;flex:0;padding:14px 16px;box-shadow:0 4px 14px rgba(26,115,232,0.35)" onclick="openMeetSheet()">🎥</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ JOURNEYS ══════ -->
+    <div class="screen" id="s-journeys">
+      <div class="journeys-hero">
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent;padding-top:8px">
+          <button class="header-back" style="background:rgba(255,255,255,0.15)" onclick="goBack()">←</button>
+          <div class="header-title" style="color:white">Journeys</div>
+          <div style="width:36px"></div>
+        </div>
+        <h1>✈️ The Trip You Always<br>Promised Yourself</h1>
+        <p>Curated exclusively for 60+ · Doctor on call · Tamil-speaking guides</p>
+      </div>
+      <div class="journey-types">
+        <div class="jt-chip active" onclick="filterJourney(this)">🙏 All</div>
+        <div class="jt-chip" onclick="filterJourney(this)">🕌 Spiritual</div>
+        <div class="jt-chip" onclick="filterJourney(this)">🏛️ Heritage</div>
+        <div class="jt-chip" onclick="filterJourney(this)">🌿 Nature</div>
+        <div class="jt-chip" onclick="filterJourney(this)">🌏 International</div>
+      </div>
+      <div class="journeys-body">
+        <div class="journey-card-v anim-fade">
+          <div class="jcv-hero" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">
+            🕌
+            <div class="jcv-price">₹18,000/person</div>
+            <div class="jcv-seats"><span class="badge b-red" style="background:rgba(192,57,43,0.85);color:white">🔥 4 seats left!</span></div>
+          </div>
+          <div class="jcv-body">
+            <div class="jcv-title">Char Dham Yatra 2026</div>
+            <div class="jcv-dates">📅 April 15–28 · 14 days · Badrinath, Kedarnath, Gangotri, Yamunotri</div>
+            <div class="jcv-features">
+              <span class="badge b-orange">Spiritual</span>
+              <span class="badge b-green">Doctor On Call</span>
+              <span class="badge b-muted">Vegetarian Meals</span>
+              <span class="badge b-blue">Tamil Guide</span>
+            </div>
+            <div class="jcv-progress">
+              <div class="jcv-prog-label"><span>Seats Booked</span><span>24 / 28</span></div>
+              <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:86%;background:var(--saffron)"></div></div>
+            </div>
+          </div>
+          <div class="jcv-footer">
+            <div class="jcv-incl">🏨 Hotel + Travel + Meals included</div>
+            <button class="btn-small btn-s-orange" onclick="showToast('🙏 Char Dham booking opened! EMI available.')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="journey-card-v anim-fade anim-d1">
+          <div class="jcv-hero" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">
+            🌿
+            <div class="jcv-price">₹8,500/person</div>
+          </div>
+          <div class="jcv-body">
+            <div class="jcv-title">Kodaikanal Nature Retreat</div>
+            <div class="jcv-dates">📅 May 3–7 · 5 days · Kodaikanal Hill Station</div>
+            <div class="jcv-features">
+              <span class="badge b-green">Nature</span>
+              <span class="badge b-blue">Yoga Mornings</span>
+              <span class="badge b-muted">Vegetarian</span>
+            </div>
+            <div class="jcv-progress">
+              <div class="jcv-prog-label"><span>Seats Booked</span><span>10 / 20</span></div>
+              <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:50%;background:var(--green)"></div></div>
+            </div>
+          </div>
+          <div class="jcv-footer">
+            <div class="jcv-incl">🏔️ Resort + Guided walks included</div>
+            <button class="btn-small btn-s-green" onclick="showToast('🌿 Kodaikanal booking opened!')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="journey-card-v anim-fade anim-d2">
+          <div class="jcv-hero" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">
+            🏛️
+            <div class="jcv-price">₹6,200/person</div>
+          </div>
+          <div class="jcv-body">
+            <div class="jcv-title">Tanjore & Madurai Heritage Tour</div>
+            <div class="jcv-dates">📅 May 20–23 · 4 days · Tamil Nadu Heritage Circuit</div>
+            <div class="jcv-features">
+              <span class="badge b-gold">Heritage</span>
+              <span class="badge b-muted">Tamil-Speaking Guide</span>
+              <span class="badge b-blue">AC Bus</span>
+            </div>
+            <div class="jcv-progress">
+              <div class="jcv-prog-label"><span>Seats Booked</span><span>8 / 15</span></div>
+              <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:53%;background:var(--blue2)"></div></div>
+            </div>
+          </div>
+          <div class="jcv-footer">
+            <div class="jcv-incl">🎨 Museum + Temple access included</div>
+            <button class="btn-small btn-s-blue" onclick="showToast('🏛️ Tanjore tour booking opened!')">Book Now</button>
+          </div>
+        </div>
+
+        <!-- NRI Gift banner -->
+        <div class="gift-banner" onclick="showToast('🎁 NRI Gift Journey feature! Share link with your family abroad.')">
+          <div style="font-size:40px">🎁</div>
+          <div class="gift-banner-text">
+            <h3>Gift a Journey</h3>
+            <p>Your children abroad can gift you any trip directly from this app — as a surprise or together.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ SOS EMERGENCY ══════ -->
+    <div class="screen" id="s-sos" style="flex-direction:column">
+      <div class="screen-header" style="background:transparent;padding-top:8px">
+        <button class="header-back" style="background:rgba(255,255,255,0.2)" onclick="goBack()">←</button>
+        <div class="header-title" style="color:white">Emergency Help</div>
+        <div style="width:36px"></div>
+      </div>
+      <div class="sos-body">
+        <button class="sos-big-btn" onclick="triggerSOS()">
+          <span class="sos-icon">🆘</span>
+          <span class="sos-text">PRESS FOR HELP</span>
+        </button>
+        <div class="sos-title">Are you safe?</div>
+        <div class="sos-subtitle">Press the button above to alert your coordinator,<br>family, and nearest Yugam volunteer immediately.</div>
+        <div class="sos-contacts">
+          <div class="sos-contact" onclick="showToast('📞 Calling Priya Rajan — Coordinator…')">
+            <div class="sos-contact-av">🤝</div>
+            <div>
+              <div class="sos-contact-name">Priya Rajan</div>
+              <div class="sos-contact-role">Your Circle Coordinator</div>
+            </div>
+            <div class="sos-call-icon">📞</div>
+          </div>
+          <div class="sos-contact" onclick="showToast('📞 Calling your son Rajesh in Singapore…')">
+            <div class="sos-contact-av">👨</div>
+            <div>
+              <div class="sos-contact-name">Rajesh (Son)</div>
+              <div class="sos-contact-role">Singapore · NRI Family Contact</div>
+            </div>
+            <div class="sos-call-icon">📞</div>
+          </div>
+          <div class="sos-contact" onclick="showToast('📞 Calling Yugam Emergency Line…')">
+            <div class="sos-contact-av">🏥</div>
+            <div>
+              <div class="sos-contact-name">Yugam Emergency</div>
+              <div class="sos-contact-role">24/7 Response Team</div>
+            </div>
+            <div class="sos-call-icon">📞</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ COMPANION / PALLIATIVE ══════ -->
+    <div class="screen" id="s-companion">
+      <div class="companion-hero">
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent;padding-top:8px">
+          <button class="header-back" style="background:rgba(255,255,255,0.15)" onclick="goBack()">←</button>
+          <div class="header-title" style="color:white">Companion Care</div>
+          <div style="width:36px"></div>
+        </div>
+        <h1>💛 You Are Not Alone</h1>
+        <p>"No one in our circle should face illness or grief alone." Every Yugam member has a companion — always.</p>
+      </div>
+      <div class="companion-body">
+
+        <!-- Mood check-in -->
+        <div class="mood-check anim-fade">
+          <div class="mood-title">How are you feeling today? 🙏</div>
+          <div class="mood-emojis">
+            <button class="mood-btn" onclick="selectMood(this)">
+              <span class="mood-emoji">😄</span>
+              <span class="mood-label">Great</span>
+            </button>
+            <button class="mood-btn selected" onclick="selectMood(this)">
+              <span class="mood-emoji">🙂</span>
+              <span class="mood-label">Good</span>
+            </button>
+            <button class="mood-btn" onclick="selectMood(this)">
+              <span class="mood-emoji">😐</span>
+              <span class="mood-label">Okay</span>
+            </button>
+            <button class="mood-btn" onclick="selectMood(this)">
+              <span class="mood-emoji">😔</span>
+              <span class="mood-label">Low</span>
+            </button>
+            <button class="mood-btn" onclick="selectMood(this)">
+              <span class="mood-emoji">😢</span>
+              <span class="mood-label">Sad</span>
+            </button>
+          </div>
+          <button class="btn-main" style="margin-top:14px;background:var(--green)" onclick="showToast('✅ Mood logged! Your companion has been notified.')">Log Check-in</button>
+        </div>
+
+        <!-- Companion card -->
+        <div class="companion-card anim-fade anim-d1">
+          <div class="cc-header">
+            <div class="cc-av">🤝</div>
+            <div>
+              <div class="cc-name">Meena Devi</div>
+              <div class="cc-role">Your Yugam Companion · Volunteer</div>
+            </div>
+            <div style="margin-left:auto"><span class="badge b-green">● Available</span></div>
+          </div>
+          <div class="cc-body">
+            <p>Meena has been your companion for 3 months. She checks in with you 3 times a week — not because it's her job, but because she cares.</p>
+            <div class="cc-actions">
+              <button class="btn-small btn-s-orange" onclick="showToast('📞 Calling Meena Devi…')">📞 Call Meena</button>
+              <button class="btn-small btn-s-ghost" onclick="showToast('💬 Opening chat with Meena…')">💬 Message</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grief support -->
+        <div class="companion-card anim-fade anim-d2">
+          <div class="cc-header">
+            <div class="cc-av" style="background:rgba(123,45,123,0.1)">💜</div>
+            <div>
+              <div class="cc-name">Family Grief Support</div>
+              <div class="cc-role">For you and your family</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>If you or your family are going through a difficult time — illness, loss, or grief — Yugam provides trained support. You never walk through it alone.</p>
+            <div class="cc-actions">
+              <button class="btn-small" style="background:rgba(123,45,123,0.12);color:#7b2d7b;border-radius:10px;padding:8px 14px;border:none;font-size:13px;font-weight:700;cursor:pointer" onclick="showToast('💜 Connecting to grief support counsellor…')">Get Support</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily wellness -->
+        <div class="card anim-fade anim-d3" style="padding:16px">
+          <div style="font-size:14px;font-weight:800;color:var(--bark);margin-bottom:12px">This Week's Check-ins</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--bark)">Monday</span><span class="badge b-green">✓ Good</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--bark)">Tuesday</span><span class="badge b-green">✓ Great</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--bark)">Wednesday</span><span class="badge b-orange">Today</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">Thursday</span><span class="badge b-muted">Upcoming</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">Friday</span><span class="badge b-muted">Upcoming</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ NRI FAMILY REPORT VIEW ══════ -->
+    <div class="screen" id="s-nri">
+      <div class="nri-report-hero">
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent;padding-top:8px">
+          <button class="header-back" style="background:rgba(255,255,255,0.15)" onclick="goBack()">←</button>
+          <div class="header-title" style="color:white">Family View</div>
+          <button class="header-action" style="background:rgba(255,255,255,0.15)" onclick="openMeetSheet()">🎥</button>
+        </div>
+        <h1>🌏 Your Family Can See This</h1>
+        <p>Daily reports sent to Rajesh (Son) in Singapore · Last sent: Today 7:00 AM</p>
+      </div>
+      <div class="report-body">
+
+        <!-- NRI connection card -->
+        <div class="card anim-fade" style="padding:16px">
+          <div style="display:flex;gap:14px;align-items:center">
+            <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0d3b6e,#1a6b8a);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">👨</div>
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:800;color:var(--bark)">Rajesh (Your Son)</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px">🇸🇬 Singapore · NRI Family Peace Plan</div>
+              <div style="font-size:12px;color:var(--green);margin-top:4px;font-weight:700">● Receives daily reports</div>
+            </div>
+            <button class="btn-small btn-s-blue" onclick="openMeetSheet()">🎥 Call</button>
+          </div>
+        </div>
+
+        <!-- Daily reports -->
+        <div class="report-day-card anim-fade anim-d1">
+          <div class="rdc-header">
+            <div class="rdc-date">Today — Wednesday, 11 March 2026</div>
+            <span class="badge b-green">Sent ✓</span>
+          </div>
+          <div class="rdc-items">
+            <div class="rdc-item">
+              <div class="rdc-dot"></div>
+              <div><div class="rdc-text">✅ Attended Marina Beach Morning Walk — 6:00 AM</div><div class="rdc-time">6:42 AM</div></div>
+            </div>
+            <div class="rdc-item">
+              <div class="rdc-dot orange"></div>
+              <div><div class="rdc-text">🍲 Hosting Traditional Cooking class today at 10 AM — 4 students joining via Google Meet</div><div class="rdc-time">9:45 AM</div></div>
+            </div>
+            <div class="rdc-item">
+              <div class="rdc-dot blue"></div>
+              <div><div class="rdc-text">😊 Mood check-in: Feeling Good today</div><div class="rdc-time">8:30 AM</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-day-card anim-fade anim-d2">
+          <div class="rdc-header">
+            <div class="rdc-date">Yesterday — Tuesday, 10 March 2026</div>
+            <span class="badge b-green">Sent ✓</span>
+          </div>
+          <div class="rdc-items">
+            <div class="rdc-item">
+              <div class="rdc-dot"></div>
+              <div><div class="rdc-text">✅ Chair Yoga session attended — Community Hall, 5:00 PM</div><div class="rdc-time">5:55 PM</div></div>
+            </div>
+            <div class="rdc-item">
+              <div class="rdc-dot blue"></div>
+              <div><div class="rdc-text">😄 Mood check-in: Feeling Great! Spoke to Meena (companion)</div><div class="rdc-time">11:00 AM</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly summary -->
+        <div class="card anim-fade anim-d3" style="padding:16px">
+          <div style="font-size:14px;font-weight:800;color:var(--bark);margin-bottom:14px">March Summary (So Far)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="text-align:center;background:var(--blush);border-radius:12px;padding:14px">
+              <div style="font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--green)">15</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700">Sessions Attended</div>
+            </div>
+            <div style="text-align:center;background:var(--blush);border-radius:12px;padding:14px">
+              <div style="font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--saffron)">94%</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700">Attendance Rate</div>
+            </div>
+            <div style="text-align:center;background:var(--blush);border-radius:12px;padding:14px">
+              <div style="font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--blue2)">23</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700">Cooking Students</div>
+            </div>
+            <div style="text-align:center;background:var(--blush);border-radius:12px;padding:14px">
+              <div style="font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--bark)">12</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700">Circle Friends</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ NOTIFICATIONS ══════ -->
+    <div class="screen" id="s-notif">
+      <div class="screen-header">
+        <button class="header-back" onclick="goBack()">←</button>
+        <div class="header-title">Notifications</div>
+        <button class="header-action" onclick="showToast('✅ All notifications marked as read')">✓</button>
+      </div>
+      <div class="notif-body">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 4px 4px">Today</div>
+        <div class="notif-item unread">
+          <div class="ni-icon" style="background:rgba(26,115,232,0.12)">🎥</div>
+          <div class="ni-content">
+            <div class="ni-title">Your cooking session starts in 30 minutes!</div>
+            <div class="ni-body">4 students are joining your Traditional Tamil Cooking class at 10:00 AM. Google Meet link is ready.</div>
+            <div class="ni-time">9:30 AM · Tap to Join Meet</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="ni-icon" style="background:rgba(30,122,74,0.12)">✅</div>
+          <div class="ni-content">
+            <div class="ni-title">Morning Walk attendance confirmed!</div>
+            <div class="ni-body">Great job! 11 out of 12 circle members attended today's Marina Beach walk. Your streak is now 18 days 🔥</div>
+            <div class="ni-time">6:45 AM</div>
+          </div>
+        </div>
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:16px 4px 4px">Yesterday</div>
+        <div class="notif-item">
+          <div class="ni-icon" style="background:rgba(201,162,39,0.15)">🕌</div>
+          <div class="ni-content">
+            <div class="ni-title">Only 4 seats left for Char Dham Yatra!</div>
+            <div class="ni-body">April 15–28 pilgrimage with medical support. Book now before it fills up.</div>
+            <div class="ni-time">Yesterday 2:00 PM</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="ni-icon" style="background:rgba(123,45,123,0.1)">💛</div>
+          <div class="ni-content">
+            <div class="ni-title">Companion check-in from Meena</div>
+            <div class="ni-body">Meena Devi checked in to see how you're doing. She'll call tomorrow morning.</div>
+            <div class="ni-time">Yesterday 11:30 AM</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="ni-icon" style="background:rgba(26,82,118,0.12)">🌏</div>
+          <div class="ni-content">
+            <div class="ni-title">Rajesh viewed your daily report</div>
+            <div class="ni-body">Your son in Singapore opened today's activity report. He sent a note: "Amma, so happy to see you active!"</div>
+            <div class="ni-time">Yesterday 8:15 PM</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="ni-icon" style="background:rgba(232,101,26,0.12)">💰</div>
+          <div class="ni-content">
+            <div class="ni-title">₹200 earned from cooking session!</div>
+            <div class="ni-body">Your Sunday cooking class earned ₹200 (after Yugam's 20% platform fee). Amount credited to UPI.</div>
+            <div class="ni-time">Sunday 12:30 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ PROFILE ══════ -->
+    <div class="screen" id="s-profile">
+      <div class="profile-hero">
+        <div class="screen-header" style="position:absolute;top:0;left:0;right:0;background:transparent;padding-top:8px">
+          <div style="width:36px"></div>
+          <div class="header-title" style="color:white">My Profile</div>
+          <button class="header-action" style="background:rgba(255,255,255,0.15)" onclick="showToast('✏️ Edit profile opened!')">✏️</button>
+        </div>
+        <div class="profile-avatar-ring">👵</div>
+        <div class="profile-name">Saroja Krishnamurthy</div>
+        <div class="profile-plan"><span class="badge b-orange">Individual Member · ₹999/yr</span></div>
+      </div>
+      <div class="profile-stats-row">
+        <div class="ps-item"><div class="ps-val">18</div><div class="ps-label">Day Streak 🔥</div></div>
+        <div class="ps-item" style="border-left:1px solid var(--blush2);border-right:1px solid var(--blush2)"><div class="ps-val">94%</div><div class="ps-label">Attendance</div></div>
+        <div class="ps-item"><div class="ps-val">₹800</div><div class="ps-label">Earned MTD</div></div>
+      </div>
+      <div class="profile-body">
+        <div class="profile-section-title">My Details</div>
+        <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(44,26,14,0.06);overflow:hidden">
+          <div class="profile-row" style="border-radius:14px 14px 0 0">
+            <div class="pr-icon">👤</div>
+            <div class="pr-label">Full Name</div>
+            <div class="pr-value">Saroja Krishnamurthy</div>
+          </div>
+          <div class="profile-row">
+            <div class="pr-icon">🎂</div>
+            <div class="pr-label">Age</div>
+            <div class="pr-value">67 years</div>
+          </div>
+          <div class="profile-row">
+            <div class="pr-icon">📱</div>
+            <div class="pr-label">Mobile</div>
+            <div class="pr-value">+91 94432 12345</div>
+          </div>
+          <div class="profile-row" style="border-radius:0 0 14px 14px">
+            <div class="pr-icon">📍</div>
+            <div class="pr-label">Location</div>
+            <div class="pr-value">Marina Beach Area</div>
+          </div>
+        </div>
+
+        <div class="profile-section-title">My Yugam</div>
+        <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(44,26,14,0.06);overflow:hidden">
+          <div class="profile-row" style="border-radius:14px 14px 0 0" onclick="goTo('s-circle')">
+            <div class="pr-icon" style="background:rgba(30,122,74,0.12)">⭕</div>
+            <div class="pr-label">My Circle</div>
+            <div class="pr-value" style="color:var(--green)">Marina Beach Walk</div>
+            <div class="pr-arrow">›</div>
+          </div>
+          <div class="profile-row" onclick="goTo('s-skills')">
+            <div class="pr-icon" style="background:rgba(232,101,26,0.12)">🎓</div>
+            <div class="pr-label">Teaching</div>
+            <div class="pr-value">Traditional Cooking</div>
+            <div class="pr-arrow">›</div>
+          </div>
+          <div class="profile-row" style="border-radius:0 0 14px 14px" onclick="goTo('s-journeys')">
+            <div class="pr-icon" style="background:rgba(26,82,118,0.12)">✈️</div>
+            <div class="pr-label">Upcoming Journey</div>
+            <div class="pr-value">Char Dham (Apr)</div>
+            <div class="pr-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="profile-section-title">Family & Emergency</div>
+        <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(44,26,14,0.06);overflow:hidden">
+          <div class="profile-row" style="border-radius:14px 14px 0 0" onclick="goTo('s-nri')">
+            <div class="pr-icon" style="background:rgba(26,107,138,0.12)">🌏</div>
+            <div class="pr-label">NRI Family Plan</div>
+            <div class="pr-value" style="color:var(--green)">Active</div>
+            <div class="pr-arrow">›</div>
+          </div>
+          <div class="profile-row" style="border-radius:0 0 14px 14px" onclick="goTo('s-sos')">
+            <div class="pr-icon" style="background:rgba(192,57,43,0.1)">🆘</div>
+            <div class="pr-label">Emergency Contacts</div>
+            <div class="pr-value">3 contacts set</div>
+            <div class="pr-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="profile-section-title">Membership</div>
+        <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(44,26,14,0.06);overflow:hidden">
+          <div class="profile-row" style="border-radius:14px 14px 0 0">
+            <div class="pr-icon" style="background:rgba(232,101,26,0.12)">💳</div>
+            <div class="pr-label">Plan</div>
+            <div class="pr-value">Individual · ₹999/yr</div>
+          </div>
+          <div class="profile-row">
+            <div class="pr-icon" style="background:rgba(30,122,74,0.12)">📅</div>
+            <div class="pr-label">Member Since</div>
+            <div class="pr-value">October 2025</div>
+          </div>
+          <div class="profile-row" style="border-radius:0 0 14px 14px" onclick="showToast('⬆️ Upgrade to NRI Family Plan opened!')">
+            <div class="pr-icon" style="background:rgba(201,162,39,0.15)">⬆️</div>
+            <div class="pr-label">Upgrade Plan</div>
+            <div class="pr-value" style="color:var(--saffron)">NRI Plan available</div>
+            <div class="pr-arrow">›</div>
+          </div>
+        </div>
+
+        <div style="padding:20px 4px 8px">
+          <button class="btn-outline" onclick="showToast('👋 Logging out…')">Log Out</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen-wrap -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-tab active" onclick="navTo('s-home', this)">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-tab" onclick="navTo('s-circle', this)">
+      <span class="nav-icon">⭕</span>
+      <span class="nav-label">Circle</span>
+    </button>
+    <button class="nav-tab" onclick="navTo('s-skills', this)">
+      <span class="nav-icon">🎓</span>
+      <span class="nav-label">Skills</span>
+    </button>
+    <button class="nav-tab" onclick="navTo('s-journeys', this)">
+      <span class="nav-icon">✈️</span>
+      <span class="nav-label">Journeys</span>
+    </button>
+    <button class="nav-tab" onclick="navTo('s-profile', this)">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">Profile</span>
+    </button>
+  </nav>
+
+  <!-- TOAST -->
+  <div id="app-toast"></div>
+
+  <!-- GOOGLE MEET SHEET -->
+  <div class="sheet-overlay" id="meet-sheet" onclick="closeMeetSheet(event)">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">🎥 Join Google Meet</div>
+      <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:14px">
+        <div style="background:#202124;border-radius:16px;padding:20px;text-align:center">
+          <div style="font-size:48px;margin-bottom:10px">🎥</div>
+          <div style="color:white;font-size:16px;font-weight:800;margin-bottom:4px">Traditional Cooking Session</div>
+          <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-bottom:14px">Today · 10:00 AM · 4 students joining</div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;margin-bottom:14px">
+            <div style="color:#8ab4f8;font-size:13px;word-break:break-all">meet.google.com/yugam-cook-abc123</div>
+          </div>
+          <div style="display:flex;gap:8px;color:rgba(255,255,255,0.5);font-size:12px;justify-content:center;flex-wrap:wrap">
+            <span>📱 No account needed</span>
+            <span>·</span>
+            <span>📧 Auto-sent to students</span>
+          </div>
+        </div>
+        <button class="meet-join-btn" onclick="joinMeet()">
+          🎥 Join Now — meet.google.com
+        </button>
+        <button class="btn-outline" onclick="copyMeetLink()">📋 Copy Link</button>
+        <button style="background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:8px" onclick="closeMeetSheetBtn()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone-shell -->
+
+<script>
+// ── NAVIGATION ──
+const screenHistory = ['s-splash'];
+const noNavScreens = ['s-splash','s-onboard','s-lang'];
+
+function goTo(id) {
+  const current = screenHistory[screenHistory.length - 1];
+  if (current === id) return;
+  document.getElementById(current).classList.remove('active');
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  target.scrollTop = 0;
+  screenHistory.push(id);
+  // Show/hide bottom nav
+  const nav = document.getElementById('bottom-nav');
+  nav.style.display = noNavScreens.includes(id) ? 'none' : 'flex';
+  // Sync nav tabs
+  const navMap = {'s-home':'0','s-circle':'1','s-skills':'2','s-journeys':'3','s-profile':'4'};
+  if (navMap[id] !== undefined) {
+    document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active', i == navMap[id]));
+  }
+}
+
+function goBack() {
+  if (screenHistory.length <= 1) return;
+  const current = screenHistory.pop();
+  document.getElementById(current).classList.remove('active');
+  const prev = screenHistory[screenHistory.length - 1];
+  const target = document.getElementById(prev);
+  target.classList.add('active');
+  target.scrollTop = 0;
+  const nav = document.getElementById('bottom-nav');
+  nav.style.display = noNavScreens.includes(prev) ? 'none' : 'flex';
+}
+
+function navTo(id, tabEl) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  // Clear history and go direct
+  const current = screenHistory[screenHistory.length - 1];
+  document.getElementById(current).classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  document.getElementById(id).scrollTop = 0;
+  screenHistory.length = 0;
+  screenHistory.push(id);
+}
+
+// Init — hide bottom nav on splash
+document.getElementById('bottom-nav').style.display = 'none';
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('app-toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// ── MEET SHEET ──
+function openMeetSheet() {
+  document.getElementById('meet-sheet').classList.add('open');
+}
+function closeMeetSheet(e) {
+  if (e.target === document.getElementById('meet-sheet')) {
+    document.getElementById('meet-sheet').classList.remove('open');
+  }
+}
+function closeMeetSheetBtn() {
+  document.getElementById('meet-sheet').classList.remove('open');
+}
+function joinMeet() {
+  document.getElementById('meet-sheet').classList.remove('open');
+  showToast('🎥 Opening Google Meet… Have a wonderful session! 🙏');
+}
+function copyMeetLink() {
+  showToast('📋 Meet link copied! Send it to your students.');
+}
+
+// ── SOS ──
+function triggerSOS() {
+  showToast('🚨 SOS ALERT SENT! Coordinator & family notified. Help is on the way.');
+  const btn = document.querySelector('.sos-big-btn');
+  btn.style.background = '#ff4444';
+  btn.style.transform = 'scale(0.95)';
+  setTimeout(() => {
+    btn.style.background = 'white';
+    btn.style.transform = '';
+  }, 600);
+}
+
+// ── MOOD ──
+function selectMood(el) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── LANG ──
+function selectLang(el) {
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── SLOTS ──
+function selectSlot(el) {
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── SKILL FILTER ──
+function filterSkill(el) {
+  document.querySelectorAll('.sf-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  showToast('Filtering: ' + el.textContent.trim());
+}
+
+// ── JOURNEY FILTER ──
+function filterJourney(el) {
+  document.querySelectorAll('.jt-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── PROGRESS ANIMATION ──
+setTimeout(() => {
+  document.querySelectorAll('.prog-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0';
+    setTimeout(() => el.style.width = w, 100);
+  });
+}, 500);
+
+// ── KEYBOARD NAVIGATION (demo) ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') goBack();
+});
+</script>
+</body>
+</html>
